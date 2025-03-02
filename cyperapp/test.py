@@ -77,7 +77,7 @@ def giaimavb():
             file_path=filedialog.asksaveasfilename(defaultextension="txt",
                                                    filetypes=[("Text","*txt"),
                                                               ("All file","*.*")])
-            if file_path:  # Nếu người dùng không hủy chọn file
+            if file_path:
                 with open(file_path, "w", encoding="utf-8") as file:
                     file.write(output.get("1.0", "end"))
         labelbg = Label(frame, text="Nhập bản mã đi:", font=("Arial", 20))
@@ -105,7 +105,7 @@ mahoavb()
 giaimavb()
 butframe = Frame(win)
 butframe.grid(row=1, column=0, sticky="ew", pady=10)
-spacer = Label(butframe, text=" ")  # Một label rỗng để tạo khoảng cách
+spacer = Label(butframe, text=" ")
 spacer.pack(side="left", padx=200, pady=100)
 b1 = Button(butframe, text="Mã hóa", command=lambda: show_frame("mhvb"))
 b1.pack(side="left", padx=10, pady=100)
