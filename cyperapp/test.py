@@ -17,10 +17,14 @@ def mahoavb ():
             entry.delete("1.0","end")
             entry.insert("end",output.get("1.0","end"))
         def get():
-            text = entry.get("1.0", "end-1c")
-            text = mhAES.mahoa(text)
-            output.delete("1.0", "end")
-            output.insert("end", text+"\n")
+            try:
+                text = entry.get("1.0", "end-1c")
+                text = mhAES.mahoa(text)
+                output.delete("1.0", "end")
+                output.insert("end", text)
+            except Exception as e:
+                output.delete("1.0", "end")
+                output.insert("end", "Lỗi rồi duma")
         def mhfile():
             file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
             if file_path:
@@ -32,7 +36,7 @@ def mahoavb ():
             file_path=filedialog.asksaveasfilename(defaultextension="txt",
                                                    filetypes=[("Text","*txt"),
                                                               ("All file","*.*")])
-            if file_path:  # Nếu người dùng không hủy chọn file
+            if file_path:
                 with open(file_path, "w", encoding="utf-8") as file:
                     file.write(output.get("1.0", "end"))
         labelbg =  Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
@@ -69,10 +73,14 @@ def giaimavb():
             entry.delete("1.0","end")
             entry.insert("end",output.get("1.0","end"))
         def get():
-            text = entry.get("1.0", "end-1c")
-            text = mhAES.giaima(text)
-            output.delete("1.0", "end")
-            output.insert("end", text)
+            try:
+                text = entry.get("1.0", "end-1c")
+                text = mhAES.giaima(text)
+                output.delete("1.0", "end")
+                output.insert("end", text)
+            except Exception as e:
+                output.delete("1.0", "end")
+                output.insert("end", "Lỗi rồi duma")
         def savefile():
             file_path=filedialog.asksaveasfilename(defaultextension="txt",
                                                    filetypes=[("Text","*txt"),
