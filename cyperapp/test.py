@@ -1,10 +1,12 @@
 import mhAES
 import random
+import os
 import string
 from tkinter import *
 from tkinter import  Button, filedialog
 import secrets
 from importlib.metadata import entry_points
+import xoafile
 widgets = []
 win=Tk()
 frames = {}
@@ -58,7 +60,7 @@ def mahoavb ():
         label_frame = Frame(frame)
         label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
 
-        label_key = Label(label_frame, text="Nhập key(đủ 32 kí tự):", font=("Arial", 20))
+        label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
         label_key.pack(side="left", expand=True)
 
         label_iv = Label(label_frame, text="Nhập IV (đủ 16 kí tự):", font=("Arial", 20))
@@ -110,7 +112,7 @@ def giaimavb():
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
         def gmfile():
-            file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
+            file_path = filedialog.askopenfilename(title="Chọn file để giải mã")
             if file_path:
                 with open(file_path, "r",encoding="utf-8") as f:
                     data = f.read()
@@ -143,7 +145,7 @@ def giaimavb():
         label_frame = Frame(frame)
         label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
 
-        label_key = Label(label_frame, text="Nhập key(đủ 32 kí tự):", font=("Arial", 20))
+        label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
         label_key.pack(side="left", expand=True)
 
         label_iv = Label(label_frame, text="Nhập IV (đủ 16 kí tự):", font=("Arial", 20))
@@ -183,19 +185,62 @@ def giaimavb():
         output.pack(fill="x",padx=5, pady=5)
 
         frames["gmvb"] = frame
+def xoafil():
+    frame=Frame(win)
+    frame.grid(row=0, column=0, sticky="nsew")
+    frame.grid_rowconfigure(0, weight=1)
+    frame.grid_columnconfigure(0, weight=1)
+    def layfile():
+        file_path = filedialog.askopenfilename(title="Chọn file cần xóa")
+        if file_path:
+            inentry.delete("1.0", "end")
+            inentry.insert("end", file_path)
+    def xoa():
+        file_path=inentry.get("1.0", "end").strip()
+        file_path=file_path.replace("/","\\\\")
+        print(file_path)
+        if (xoafile.checkquyen(file_path)==True):
+            xoafile.xoafilee(file_path)
+            outentry.delete("1.0", "end")
+            outentry.insert("end", xoafile.quyen+"\n"+xoafile.status)
+        else:
+            outentry.delete("1.0", "end")
+            outentry.insert("end", xoafile.quyen + "\n" + xoafile.status)
+    labelbg = Label(frame, text="Xóa file với chuẩn DoD 5220.22-M:", font=("Arial", 20))
+    labelbg.pack(pady=5)
+
+    inentry = Text(frame, wrap="word", height=2, width=50)
+    inentry.pack(fill="x", padx=5, pady=5)
+
+    spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
+    spacer.pack(pady=5)
+
+    button = Button(frame, text="Chọn file", command=layfile)
+    button.place(x=550, y=100)
+
+    button = Button(frame, text="Xóa file", command=xoa)
+    button.place(x=450, y=100)
+
+    outentry = Text(frame, wrap="word", height=4, width=50)
+    outentry.pack(fill="x", padx=5, pady=5)
+
+    frames["xfvsdod"] = frame
 win.title("Test")
 win.geometry("1000x750")
 win.grid_rowconfigure(0, weight=1)
 win.grid_columnconfigure(0, weight=1)
 mahoavb()
 giaimavb()
+xoafil()
 butframe = Frame(win)
 butframe.grid(row=1, column=0, sticky="ew", pady=10)
 spacer = Label(butframe, text=" ")
-spacer.pack(side="left", padx=200, pady=100)
-b1 = Button(butframe, text="Mã hóa", command=lambda: show_frame("mhvb"))
+spacer.pack(side="left", padx=120, pady=100)
+b1 = Button(butframe, text="Mã hóa với AES", command=lambda: show_frame("mhvb"))
 b1.pack(side="left", padx=10, pady=100)
-b2 = Button(butframe, text="Giải mã", command=lambda: show_frame("gmvb"))
+b2 = Button(butframe, text="Giải mã với AES ", command=lambda: show_frame("gmvb"))
 b2.pack(side="left", padx=10, pady=5)
+b3 = Button(butframe, text="Xóa file an toàn theo chuẩn DoD 5220.22-M ", command=lambda: show_frame("xfvsdod"))
+b3.pack(side="left", padx=10, pady=5)
 show_frame("mhvb")
 win.mainloop()
