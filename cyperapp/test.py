@@ -1,5 +1,6 @@
 import mhAES
 import random
+import kiemtratinhtoanven as cheeck
 import os
 import string
 from tkinter import *
@@ -185,6 +186,7 @@ def giaimavb():
         output.pack(fill="x",padx=5, pady=5)
 
         frames["gmvb"] = frame
+
 def xoafil():
     frame=Frame(win)
     frame.grid(row=0, column=0, sticky="nsew")
@@ -198,7 +200,6 @@ def xoafil():
     def xoa():
         file_path=inentry.get("1.0", "end").strip()
         file_path=file_path.replace("/","\\\\")
-        print(file_path)
         if (xoafile.checkquyen(file_path)==True):
             xoafile.xoafilee(file_path)
             outentry.delete("1.0", "end")
@@ -225,6 +226,57 @@ def xoafil():
     outentry.pack(fill="x", padx=5, pady=5)
 
     frames["xfvsdod"] = frame
+def kiemtrafile():
+    frame = Frame(win)
+    frame.grid(row=0, column=0, sticky="nsew")
+    frame.grid_rowconfigure(0, weight=1)
+    frame.grid_columnconfigure(0, weight=1)
+
+    def getfile(i):
+        file_path = filedialog.askopenfilename(title="Chọn file")
+        if file_path:
+            i.delete("1.0", "end")
+            i.insert("end", file_path)
+    def checktv():
+        file_path1 = inputt1.get("1.0", "end").strip()
+        file_path1 = file_path1.replace("/", "\\\\")
+        file_path2 = inputt2.get("1.0", "end").strip()
+        file_path2 = file_path2.replace("/", "\\\\")
+        hash_goc=cheeck.shaa256(file_path1)
+        hash_cancheck=cheeck.shaa256(file_path2)
+        if(hash_goc and hash_cancheck):
+            if hash_goc == hash_cancheck:
+                outputt.delete("1.0", "end")
+                outputt.insert("end", "✅ File không bị thay đổi.")
+            else:
+                outputt.delete("1.0", "end")
+                outputt.insert("end", "❌ File đã bị thay đổi!")
+        else:
+            outputt.delete("1.0", "end")
+            outputt.insert("end", "❌Có lỗi xảy ra!")
+
+    labelbg = Label(frame, text="Kiểm tra tính toàn vẹn của file với SHA-256:", font=("Arial", 20))
+    labelbg.pack(pady=5)
+
+    inputt1=Text(frame,wrap="word",height=2,width=50)
+    inputt1.pack(fill="x",padx=5,pady=5)
+
+    button=Button(frame,text="Chọn file gốc",command=lambda: getfile(inputt1))
+    button.pack(pady=5)
+
+    inputt2 = Text(frame, wrap="word", height=2, width=50)
+    inputt2.pack(fill="x", padx=5, pady=5)
+
+    button = Button(frame, text="Chọn file cần kiểm tra", command=lambda: getfile(inputt2))
+    button.pack(pady=5)
+
+    outputt = Text(frame, wrap="word", height=5, width=50)
+    outputt.pack(fill="x", padx=5, pady=5)
+
+    button = Button(frame, text="Kiểm tra tính toàn vẹn", command=checktv)
+    button.pack(pady=5)
+
+    frames["checktv"]=frame
 win.title("Test")
 win.geometry("1000x750")
 win.grid_rowconfigure(0, weight=1)
@@ -232,15 +284,18 @@ win.grid_columnconfigure(0, weight=1)
 mahoavb()
 giaimavb()
 xoafil()
+kiemtrafile()
 butframe = Frame(win)
 butframe.grid(row=1, column=0, sticky="ew", pady=10)
 spacer = Label(butframe, text=" ")
-spacer.pack(side="left", padx=120, pady=100)
+spacer.pack(side="left", padx=100, pady=100)
 b1 = Button(butframe, text="Mã hóa với AES", command=lambda: show_frame("mhvb"))
 b1.pack(side="left", padx=10, pady=100)
 b2 = Button(butframe, text="Giải mã với AES ", command=lambda: show_frame("gmvb"))
 b2.pack(side="left", padx=10, pady=5)
-b3 = Button(butframe, text="Xóa file an toàn theo chuẩn DoD 5220.22-M ", command=lambda: show_frame("xfvsdod"))
+b3 = Button(butframe, text="Xóa file an toàn theo chuẩn DoD", command=lambda: show_frame("xfvsdod"))
 b3.pack(side="left", padx=10, pady=5)
+b4 = Button(butframe, text="Kiểm tra tính toàn vẹn của file", command=lambda: show_frame("checktv"))
+b4.pack(side="left", padx=10, pady=5)
 show_frame("mhvb")
 win.mainloop()
