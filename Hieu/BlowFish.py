@@ -14,22 +14,16 @@ import base64
 
 
 def mahoa(text, key, iv):
+    # Chuyển text sang bytes
+    data = text.encode('utf-8')
     cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
-    padded_data = pad(text, Blowfish.block_size)
+    padded_data = pad(data, Blowfish.block_size)
     encrypted = cipher.encrypt(padded_data)
+    return encrypted.hex()  # Trả về dạng hex để dễ truyền
 
-    # Ghép IV + ciphertext để giải mã sau
-    encrypted_data = iv + encrypted
-    encoded = base64.b64encode(encrypted_data)
-
-    return encoded.decode().hex()
-
-def giaima(text, key, iv):
-    decoded = base64.b64decode(encoded)
-    iv_dec = decoded[:Blowfish.block_size]
-    ciphertext = decoded[Blowfish.block_size:]
-
-    cipher_dec = Blowfish.new(key, Blowfish.MODE_CBC, iv_dec)
-    decrypted = unpad(cipher_dec.decrypt(ciphertext), Blowfish.block_size)
-
-    return decrypted.decode()
+def giaima(text_mahoa, key, iv):
+    cipher = Blowfish.new(key, Blowfish.MODE_CBC, iv)
+    encrypted_bytes = bytes.fromhex(text_mahoa)
+    decrypted = cipher.decrypt(encrypted_bytes)
+    unpadded = unpad(decrypted, Blowfish.block_size)
+    return unpadded.decode('utf-8')

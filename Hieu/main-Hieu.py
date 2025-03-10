@@ -6,6 +6,9 @@ from tkinter import *
 from tkinter import  Button, filedialog
 import secrets
 from importlib.metadata import entry_points
+
+from Hieu import BlowFish
+
 widgets = []
 win=Tk()
 frames = {}
@@ -27,7 +30,7 @@ def mahoavb ():
                 iiv=entry_iv.get("1.0","end").strip()
                 ivb=iiv.encode("utf-8")
                 text = entry.get("1.0", "end-1c")
-                text = Blowfish.mahoa(text,keyb,ivb)
+                text = BlowFish.mahoa(text,keyb,ivb)
                 output.delete("1.0", "end")
                 output.insert("end", text)
             except Exception as e:
@@ -39,7 +42,7 @@ def mahoavb ():
             entry_key.insert("end", random_key)
         def setiv():
             entry_iv.delete("1.0","end")
-            random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+            random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
             entry_iv.insert("end", random_iv)
         def mhfile():
             file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
@@ -62,7 +65,7 @@ def mahoavb ():
         label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
         label_key.pack(side="left", expand=True)
 
-        label_iv = Label(label_frame, text="Nhập IV (đủ 16 kí tự):", font=("Arial", 20))
+        label_iv = Label(label_frame, text="Nhập IV (đủ 8 kí tự):", font=("Arial", 20))
         label_iv.pack(side="left", expand=True)
 
         text_frame = Frame(frame)
@@ -104,7 +107,7 @@ def mahoavb ():
         output = Text(frame, wrap="word", height=10, width=50)
         output.pack(fill="x",padx=5, pady=5)
 
-        frames["mhvb"] = frame
+        frames["mhvbBF"] = frame
 def giaimavb():
         frame = Frame(win)
         frame.grid(row=0, column=0, sticky="nsew")
@@ -127,7 +130,7 @@ def giaimavb():
                 iiv = entry_iv.get("1.0", "end").strip()
                 ivb = iiv.encode("utf-8")
                 text = entry.get("1.0", "end-1c")
-                text = Blowfish.giaima(text,keyb,ivb)
+                text = BlowFish.giaima(text,keyb,ivb)
                 output.delete("1.0", "end")
                 output.insert("end", text)
             except Exception as e:
@@ -147,7 +150,7 @@ def giaimavb():
         label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
         label_key.pack(side="left", expand=True)
 
-        label_iv = Label(label_frame, text="Nhập IV (đủ 16 kí tự):", font=("Arial", 20))
+        label_iv = Label(label_frame, text="Nhập IV (đủ 8 kí tự):", font=("Arial", 20))
         label_iv.pack(side="left", expand=True)
 
         text_frame = Frame(frame)
@@ -183,9 +186,9 @@ def giaimavb():
         output = Text(frame, wrap="word", height=10, width=50)
         output.pack(fill="x",padx=5, pady=5)
 
-        frames["gmvb"] = frame
+        frames["gmvbBF"] = frame
 
-win.title("Test")
+win.title("BlowFish")
 win.geometry("1000x750")
 win.grid_rowconfigure(0, weight=1)
 win.grid_columnconfigure(0, weight=1)
@@ -195,9 +198,9 @@ butframe = Frame(win)
 butframe.grid(row=1, column=0, sticky="ew", pady=10)
 spacer = Label(butframe, text=" ")
 spacer.pack(side="left", padx=100, pady=100)
-b1 = Button(butframe, text="Mã hóa với BlowFish", command=lambda: show_frame("mhvb"))
+b1 = Button(butframe, text="Mã hóa với BlowFish", command=lambda: show_frame("mhvbBF"))
 b1.pack(side="left", padx=10, pady=100)
-b2 = Button(butframe, text="Giải mã với BlowFish ", command=lambda: show_frame("gmvb"))
+b2 = Button(butframe, text="Giải mã với BlowFish ", command=lambda: show_frame("gmvbBF"))
 b2.pack(side="left", padx=10, pady=5)
 show_frame("mhvb")
 win.mainloop()

@@ -297,5 +297,6 @@ b3 = Button(butframe, text="Xóa file an toàn theo chuẩn DoD", command=lambda
 b3.pack(side="left", padx=10, pady=5)
 b4 = Button(butframe, text="Kiểm tra tính toàn vẹn của file", command=lambda: show_frame("checktv"))
 b4.pack(side="left", padx=10, pady=5)
+
 show_frame("mhvb")
 win.mainloop()
