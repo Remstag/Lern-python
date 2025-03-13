@@ -3,12 +3,12 @@ from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 
 # Tạo khóa hợp lệ (24 byte cho 3DES)
-def generate_key():
-    return DES3.adjust_key_parity(get_random_bytes(24))  # Điều chỉnh parity cho hợp lệ
+#def generate_key():
+#    return DES3.adjust_key_parity(get_random_bytes(24))  # Điều chỉnh parity cho hợp lệ
 
 # Tạo IV hợp lệ (8 byte cho 3DES)
-def generate_iv():
-    return get_random_bytes(8)
+#def generate_iv():
+#    return get_random_bytes(8)
 
 # Hàm mã hóa 3DES
 def mahoa(texxt, keyy, IV):
