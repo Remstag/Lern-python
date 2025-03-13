@@ -10,9 +10,14 @@ from tkinter import  Button, filedialog
 import secrets
 from importlib.metadata import entry_points
 import xoafile
+
+#cac bien toan cuc
+giatricu=""
+
 widgets = []
 win=Tk()
 frames = {}
+
 def show_frame(page):
     frame = frames[page]
     frame.tkraise()  # Đưa frame lên trên
@@ -26,7 +31,12 @@ def mahoavbbf():
         def sett():
             entry.delete("1.0", "end")
             entry.insert("end", output.get("1.0", "end"))
-
+        def settlaigiatri():
+            entry.delete("1.0", "end")
+            entry.insert("end", giatricu)
+        def tamluu():
+            global giatricu
+            giatricu=output.get("1.0", "end")
         def get():
             try:
                 keyy = entry_key.get("1.0", "end").strip()
@@ -103,6 +113,12 @@ def mahoavbbf():
         button = Button(frame, text="Mã hóa với BlowFish", command=get)
         button.place(x=300, y=340)
 
+        button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
+        button.place(x=500, y=340)
+
+        button = Button(frame, text="Tạm lưu", command=tamluu)
+        button.place(x=600, y=340)
+
         button = Button(frame, text="Nhập file", command=mhfile)
         button.place(x=700, y=340)
 
@@ -116,13 +132,19 @@ def mahoavbbf():
         output.pack(fill="x", padx=5, pady=5)
 
         frames["mhvbBF"] = frame
-
 def giaimavbbf():
     frame = Frame(win)
     frame.grid(row=0, column=0, sticky="nsew")
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_columnconfigure(0, weight=1)
 
+    def settlaigiatri():
+        entry.delete("1.0", "end")
+        entry.insert("end", giatricu)
+
+    def tamluu():
+        global giatricu
+        giatricu = output.get("1.0", "end")
     def gmfile():
         file_path = filedialog.askopenfilename(title="Chọn file để giải mã")
         if file_path:
@@ -187,6 +209,12 @@ def giaimavbbf():
     button = Button(frame, text="Giải mã với BlowFish", command=get)
     button.place(x=300, y=310)
 
+    button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
+    button.place(x=500, y=310)
+
+    button = Button(frame, text="Tạm lưu", command=tamluu)
+    button.place(x=600, y=310)
+
     button = Button(frame, text="Nhập file", command=gmfile)
     button.place(x=700, y=310)
 
@@ -200,6 +228,7 @@ def giaimavbbf():
     output.pack(fill="x", padx=5, pady=5)
 
     frames["gmvbBF"] = frame
+
 def mahoavb ():
         frame = Frame(win)
         frame.grid(row=0, column=0, sticky="nsew")
@@ -208,6 +237,12 @@ def mahoavb ():
         def sett():
             entry.delete("1.0","end")
             entry.insert("end",output.get("1.0","end"))
+        def settlaigiatri():
+            entry.delete("1.0", "end")
+            entry.insert("end", giatricu)
+        def tamluu():
+            global giatricu
+            giatricu=output.get("1.0", "end")
         def get():
             try:
                 keyy=entry_key.get("1.0","end").strip()
@@ -280,6 +315,12 @@ def mahoavb ():
         button = Button(frame, text="Mã hóa với AES", command=get)
         button.place(x=300, y=340)
 
+        button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
+        button.place(x=500, y=340)
+
+        button = Button(frame, text="Tạm lưu", command=tamluu)
+        button.place(x=600, y=340)
+
         button = Button(frame, text="Nhập file", command=mhfile)
         button.place(x=700, y=340)
 
@@ -298,6 +339,12 @@ def giaimavb():
         frame.grid(row=0, column=0, sticky="nsew")
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
+        def settlaigiatri():
+            entry.delete("1.0", "end")
+            entry.insert("end", giatricu)
+        def tamluu():
+            global giatricu
+            giatricu=output.get("1.0", "end")
         def gmfile():
             file_path = filedialog.askopenfilename(title="Chọn file để giải mã")
             if file_path:
@@ -359,8 +406,15 @@ def giaimavb():
         button = Button(frame, text="Giải mã với AES", command=get)
         button.place(x=300, y=310)
 
+        button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
+        button.place(x=500, y=310)
+
+        button = Button(frame, text="Tạm lưu", command=tamluu)
+        button.place(x=600, y=310)
+
         button = Button(frame, text="Nhập file", command=gmfile)
         button.place(x=700, y=310)
+
 
         button = Button(frame, text="Giải mã tiếp", command=sett)
         button.place(x=800, y=310)
