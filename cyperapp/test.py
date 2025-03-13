@@ -102,7 +102,7 @@ def mahoavbbf():
         labelbg = Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
         labelbg.pack(pady=5)
 
-        entry = Text(frame, wrap="word", height=10, width=50)
+        entry = Text(frame, wrap="word", height=8, width=50)
         entry.pack(fill="x", padx=5, pady=5)
         entry.pack(pady=5)
 
@@ -110,22 +110,22 @@ def mahoavbbf():
         spacer.pack(pady=5)
 
         button = Button(frame, text="Mã hóa với BlowFish", command=get)
-        button.place(x=300, y=340)
+        button.place(x=300, y=310)
 
         button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
-        button.place(x=500, y=340)
+        button.place(x=500, y=310)
 
         button = Button(frame, text="Tạm lưu", command=tamluu)
-        button.place(x=600, y=340)
+        button.place(x=600, y=310)
 
         button = Button(frame, text="Nhập file", command=mhfile)
-        button.place(x=700, y=340)
+        button.place(x=700, y=310)
 
         button = Button(frame, text="Mã hóa tiếp", command=sett)
-        button.place(x=800, y=340)
+        button.place(x=800, y=310)
 
         button = Button(frame, text="Lưu vào file", command=savefile)
-        button.place(x=900, y=340)
+        button.place(x=900, y=310)
 
         output = Text(frame, wrap="word", height=10, width=50)
         output.pack(fill="x", padx=5, pady=5)
@@ -199,29 +199,29 @@ def giaimavbbf():
     labelbg = Label(frame, text="Nhập bản mã đi:", font=("Arial", 20))
     labelbg.pack(pady=5)
 
-    entry = Text(frame, wrap="word", height=10, width=50)
+    entry = Text(frame, wrap="word", height=8, width=50)
     entry.pack(fill="x", padx=5, pady=5)
 
     spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
     spacer.pack(pady=5)
 
     button = Button(frame, text="Giải mã với BlowFish", command=get)
-    button.place(x=300, y=310)
+    button.place(x=300, y=280)
 
     button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
-    button.place(x=500, y=310)
+    button.place(x=500, y=280)
 
     button = Button(frame, text="Tạm lưu", command=tamluu)
-    button.place(x=600, y=310)
+    button.place(x=600, y=280)
 
     button = Button(frame, text="Nhập file", command=gmfile)
-    button.place(x=700, y=310)
+    button.place(x=700, y=280)
 
     button = Button(frame, text="Giải mã tiếp", command=sett)
-    button.place(x=800, y=310)
+    button.place(x=800, y=280)
 
     button = Button(frame, text="Lưu vào file", command=savefile)
-    button.place(x=900, y=310)
+    button.place(x=900, y=280)
 
     output = Text(frame, wrap="word", height=10, width=50)
     output.pack(fill="x", padx=5, pady=5)
@@ -304,7 +304,7 @@ def mahoavb ():
         labelbg =  Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
         labelbg.pack(pady=5)
 
-        entry = Text(frame, wrap="word", height=10, width=50)
+        entry = Text(frame, wrap="word", height=8, width=50)
         entry.pack(fill="x",padx=5, pady=5)
         entry.pack(pady=5)
 
@@ -312,22 +312,22 @@ def mahoavb ():
         spacer.pack(pady=5)
 
         button = Button(frame, text="Mã hóa với AES", command=get)
-        button.place(x=300, y=340)
+        button.place(x=300, y=310)
 
         button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
-        button.place(x=500, y=340)
+        button.place(x=500, y=310)
 
         button = Button(frame, text="Tạm lưu", command=tamluu)
-        button.place(x=600, y=340)
+        button.place(x=600, y=310)
 
         button = Button(frame, text="Nhập file", command=mhfile)
-        button.place(x=700, y=340)
+        button.place(x=700, y=310)
 
         button = Button(frame, text="Mã hóa tiếp", command=sett)
-        button.place(x=800, y=340)
+        button.place(x=800, y=310)
 
         button = Button(frame, text="Lưu vào file", command=savefile)
-        button.place(x=900, y=340)
+        button.place(x=900, y=310)
 
         output = Text(frame, wrap="word", height=10, width=50)
         output.pack(fill="x",padx=5, pady=5)
@@ -396,30 +396,30 @@ def giaimavb():
         labelbg = Label(frame, text="Nhập bản mã đi:", font=("Arial", 20))
         labelbg.pack(pady=5)
 
-        entry = Text(frame, wrap="word", height=10, width=50)
+        entry = Text(frame, wrap="word", height=8, width=50)
         entry.pack(fill="x",padx=5, pady=5)
 
         spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
         spacer.pack(pady=5)
 
         button = Button(frame, text="Giải mã với AES", command=get)
-        button.place(x=300, y=310)
+        button.place(x=300, y=280)
 
         button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
-        button.place(x=500, y=310)
+        button.place(x=500, y=280)
 
         button = Button(frame, text="Tạm lưu", command=tamluu)
-        button.place(x=600, y=310)
+        button.place(x=600, y=280)
 
         button = Button(frame, text="Nhập file", command=gmfile)
-        button.place(x=700, y=310)
+        button.place(x=700, y=280)
 
 
         button = Button(frame, text="Giải mã tiếp", command=sett)
-        button.place(x=800, y=310)
+        button.place(x=800, y=280)
 
         button = Button(frame, text="Lưu vào file", command=savefile)
-        button.place(x=900, y=310)
+        button.place(x=900, y=280)
 
         output = Text(frame, wrap="word", height=10, width=50)
         output.pack(fill="x",padx=5, pady=5)
@@ -510,7 +510,7 @@ def mahoavb3des():
     labelbg = Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
     labelbg.pack(pady=5)
 
-    entry = Text(frame, wrap="word", height=10, width=50)
+    entry = Text(frame, wrap="word", height=8, width=50)
     entry.pack(fill="x", padx=5, pady=5)
     entry.pack(pady=5)
 
@@ -518,28 +518,28 @@ def mahoavb3des():
     spacer.pack(pady=5)
 
     button = Button(frame, text="Mã hóa với 3-DES", command=get)
-    button.place(x=300, y=340)
+    button.place(x=300, y=310)
 
     button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
-    button.place(x=500, y=340)
+    button.place(x=500, y=310)
 
     button = Button(frame, text="Tạm lưu", command=tamluu)
-    button.place(x=600, y=340)
+    button.place(x=600, y=310)
 
     button = Button(frame, text="Nhập file", command=mhfile)
-    button.place(x=700, y=340)
+    button.place(x=700, y=310)
 
     button = Button(frame, text="Mã hóa tiếp", command=sett)
-    button.place(x=800, y=340)
+    button.place(x=800, y=310)
 
     button = Button(frame, text="Lưu vào file", command=savefile)
-    button.place(x=900, y=340)
+    button.place(x=900, y=310)
 
     output = Text(frame, wrap="word", height=10, width=50)
     output.pack(fill="x", padx=5, pady=5)
 
     frames["mhvb3des"] = frame
-def giaimavb():
+def giaimavb3des():
     frame = Frame(win)
     frame.grid(row=0, column=0, sticky="nsew")
     frame.grid_rowconfigure(0, weight=1)
@@ -608,34 +608,35 @@ def giaimavb():
     labelbg = Label(frame, text="Nhập bản mã đi:", font=("Arial", 20))
     labelbg.pack(pady=5)
 
-    entry = Text(frame, wrap="word", height=10, width=50)
+    entry = Text(frame, wrap="word", height=8, width=50)
     entry.pack(fill="x", padx=5, pady=5)
 
     spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
     spacer.pack(pady=5)
 
     button = Button(frame, text="Giải mã với 3-DES", command=get)
-    button.place(x=300, y=310)
+    button.place(x=300, y=280)
 
     button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
-    button.place(x=500, y=310)
+    button.place(x=500, y=280)
 
     button = Button(frame, text="Tạm lưu", command=tamluu)
-    button.place(x=600, y=310)
+    button.place(x=600, y=280)
 
     button = Button(frame, text="Nhập file", command=gmfile)
-    button.place(x=700, y=310)
+    button.place(x=700, y=280)
 
     button = Button(frame, text="Giải mã tiếp", command=sett)
-    button.place(x=800, y=310)
+    button.place(x=800, y=280)
 
     button = Button(frame, text="Lưu vào file", command=savefile)
-    button.place(x=900, y=310)
+    button.place(x=900, y=280)
 
     output = Text(frame, wrap="word", height=10, width=50)
     output.pack(fill="x", padx=5, pady=5)
 
     frames["gmvb3des"] = frame
+
 def xoafil():
     frame=Frame(win)
     frame.grid(row=0, column=0, sticky="nsew")
@@ -726,6 +727,8 @@ def kiemtrafile():
     button.pack(pady=5)
 
     frames["checktv"]=frame
+
+#thiet lap cua so chinh
 win.title("Test")
 win.geometry("1000x750")
 win.grid_rowconfigure(0, weight=1)
@@ -733,12 +736,13 @@ win.grid_columnconfigure(0, weight=1)
 mahoavbbf()
 giaimavbbf()
 mahoavb3des()
+giaimavb3des()
 mahoavb()
 giaimavb()
 xoafil()
 kiemtrafile()
 butframe = Frame(win)
-butframe.grid(row=2, column=0, columnspan=3, pady=90)
+butframe.grid(row=1, column=0, columnspan=3, pady=110)
 b1 = Button(butframe, text="Mã hóa với AES", command=lambda: show_frame("mhvb"))
 b1.grid(row=0, column=0, padx=10, pady=5)
 
