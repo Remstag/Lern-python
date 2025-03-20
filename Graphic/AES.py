@@ -1,15 +1,6 @@
-from tkinter import *
-from tkinter import  Button, filedialog
-from Hieu import BlowFish
-from Hieu import Graphic
 
-import random
-import os
-import string
-import secrets
-
-def mahoavb():
-    frame = Frame(Graphic.win)
+def mahoavbbf():
+    frame = Frame(win)
     frame.grid(row=0, column=0, sticky="nsew")
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_columnconfigure(0, weight=1)
@@ -17,6 +8,14 @@ def mahoavb():
     def sett():
         entry.delete("1.0", "end")
         entry.insert("end", output.get("1.0", "end"))
+
+    def settlaigiatri():
+        entry.delete("1.0", "end")
+        entry.insert("end", giatricu)
+
+    def tamluu():
+        global giatricu
+        giatricu = output.get("1.0", "end")
 
     def get():
         try:
@@ -30,12 +29,11 @@ def mahoavb():
             output.insert("end", text)
         except Exception as e:
             output.delete("1.0", "end")
-            output.insert("end", "Something wrong")
+            output.insert("end", "Lỗi rồi duma")
 
     def setkey():
-        key_length = random.randint(4, 56)
         entry_key.delete("1.0", "end")
-        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=key_length))
+        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
         entry_key.insert("end", random_key)
 
     def setiv():
@@ -62,10 +60,10 @@ def mahoavb():
     label_frame = Frame(frame)
     label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
 
-        label_key = Label(label_frame, text="Nhập key từ 4 đến 56 ký tự:", font=("Arial", 20))
+    label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
     label_key.pack(side="left", expand=True)
 
-    label_iv = Label(label_frame, text="Nhập IV đủ 8 kí tự:", font=("Arial", 20))
+    label_iv = Label(label_frame, text="Nhập IV (đủ 8 kí tự):", font=("Arial", 20))
     label_iv.pack(side="left", expand=True)
 
     text_frame = Frame(frame)
@@ -85,7 +83,7 @@ def mahoavb():
     labelbg = Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
     labelbg.pack(pady=5)
 
-    entry = Text(frame, wrap="word", height=10, width=50)
+    entry = Text(frame, wrap="word", height=8, width=50)
     entry.pack(fill="x", padx=5, pady=5)
     entry.pack(pady=5)
 
@@ -93,18 +91,24 @@ def mahoavb():
     spacer.pack(pady=5)
 
     button = Button(frame, text="Mã hóa với BlowFish", command=get)
-    button.place(x=300, y=340)
+    button.place(x=300, y=310)
+
+    button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
+    button.place(x=500, y=310)
+
+    button = Button(frame, text="Tạm lưu", command=tamluu)
+    button.place(x=600, y=310)
 
     button = Button(frame, text="Nhập file", command=mhfile)
-    button.place(x=700, y=340)
+    button.place(x=700, y=310)
 
     button = Button(frame, text="Mã hóa tiếp", command=sett)
-    button.place(x=800, y=340)
+    button.place(x=800, y=310)
 
     button = Button(frame, text="Lưu vào file", command=savefile)
-    button.place(x=900, y=340)
+    button.place(x=900, y=310)
 
     output = Text(frame, wrap="word", height=10, width=50)
     output.pack(fill="x", padx=5, pady=5)
 
-    Graphic.frames["mhvbBF"] = frame
+    frames["mhvbBF"] = frame

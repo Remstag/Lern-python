@@ -1,18 +1,31 @@
 from tkinter import *
 from tkinter import  Button, filedialog
-from Hieu import BlowFish
-from Hieu import Graphic
-
+import BlowFish
 import random
 import os
 import string
 import secrets
-
-def mahoavb():
-    frame = Frame(Graphic.win)
+frames={}
+def giaimavbbf(main_content):
+    frame = Frame(main_content)
     frame.grid(row=0, column=0, sticky="nsew")
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_columnconfigure(0, weight=1)
+
+    def settlaigiatri():
+        entry.delete("1.0", "end")
+        entry.insert("end", giatricu)
+
+    def tamluu():
+        global giatricu
+        giatricu = output.get("1.0", "end")
+    def gmfile():
+        file_path = filedialog.askopenfilename(title="Chọn file để giải mã")
+        if file_path:
+            with open(file_path, "r", encoding="utf-8") as f:
+                data = f.read()
+            entry.delete("1.0", "end")
+            entry.insert("end", data)
 
     def sett():
         entry.delete("1.0", "end")
@@ -25,31 +38,12 @@ def mahoavb():
             iiv = entry_iv.get("1.0", "end").strip()
             ivb = iiv.encode("utf-8")
             text = entry.get("1.0", "end-1c")
-            text = BlowFish.mahoa(text, keyb, ivb)
+            text = BlowFish.giaima(text, keyb, ivb)
             output.delete("1.0", "end")
             output.insert("end", text)
         except Exception as e:
             output.delete("1.0", "end")
-            output.insert("end", "Something wrong")
-
-    def setkey():
-        key_length = random.randint(4, 56)
-        entry_key.delete("1.0", "end")
-        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=key_length))
-        entry_key.insert("end", random_key)
-
-    def setiv():
-        entry_iv.delete("1.0", "end")
-        random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-        entry_iv.insert("end", random_iv)
-
-    def mhfile():
-        file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
-        if file_path:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = f.read()
-            entry.delete("1.0", "end")
-            entry.insert("end", data)
+            output.insert("end", "Lỗi rồi duma")
 
     def savefile():
         file_path = filedialog.asksaveasfilename(defaultextension="txt",
@@ -62,10 +56,10 @@ def mahoavb():
     label_frame = Frame(frame)
     label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
 
-        label_key = Label(label_frame, text="Nhập key từ 4 đến 56 ký tự:", font=("Arial", 20))
+    label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
     label_key.pack(side="left", expand=True)
 
-    label_iv = Label(label_frame, text="Nhập IV đủ 8 kí tự:", font=("Arial", 20))
+    label_iv = Label(label_frame, text="Nhập IV (đủ 8 kí tự):", font=("Arial", 20))
     label_iv.pack(side="left", expand=True)
 
     text_frame = Frame(frame)
@@ -76,35 +70,35 @@ def mahoavb():
 
     entry_iv = Text(text_frame, wrap="word", height=2, width=60)
     entry_iv.pack(side="left", expand=True, padx=5)
-    spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
-    spacer.pack(pady=5)
-    button = Button(frame, text="Tạo key tự động", command=setkey)
-    button.place(x=200, y=90)
-    button = Button(frame, text="Tạo IV tự động", command=setiv)
-    button.place(x=700, y=90)
-    labelbg = Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
+
+    labelbg = Label(frame, text="Nhập bản mã đi:", font=("Arial", 20))
     labelbg.pack(pady=5)
 
-    entry = Text(frame, wrap="word", height=10, width=50)
+    entry = Text(frame, wrap="word", height=8, width=50)
     entry.pack(fill="x", padx=5, pady=5)
-    entry.pack(pady=5)
 
     spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
     spacer.pack(pady=5)
 
-    button = Button(frame, text="Mã hóa với BlowFish", command=get)
-    button.place(x=300, y=340)
+    button = Button(frame, text="Giải mã với BlowFish", command=get)
+    button.place(x=300, y=280)
 
-    button = Button(frame, text="Nhập file", command=mhfile)
-    button.place(x=700, y=340)
+    button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
+    button.place(x=500, y=280)
 
-    button = Button(frame, text="Mã hóa tiếp", command=sett)
-    button.place(x=800, y=340)
+    button = Button(frame, text="Tạm lưu", command=tamluu)
+    button.place(x=600, y=280)
+
+    button = Button(frame, text="Nhập file", command=gmfile)
+    button.place(x=700, y=280)
+
+    button = Button(frame, text="Giải mã tiếp", command=sett)
+    button.place(x=800, y=280)
 
     button = Button(frame, text="Lưu vào file", command=savefile)
-    button.place(x=900, y=340)
+    button.place(x=900, y=280)
 
     output = Text(frame, wrap="word", height=10, width=50)
     output.pack(fill="x", padx=5, pady=5)
 
-    Graphic.frames["mhvbBF"] = frame
+    frames["gmvbBF"] = frame
