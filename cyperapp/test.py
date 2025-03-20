@@ -1,6 +1,7 @@
 from BlowFish import *
 import BlowFish
 import mhAES
+import Triple_DES
 import random
 import kiemtratinhtoanven as cheeck
 import os
@@ -450,7 +451,7 @@ def mahoavb3des():
             iiv = entry_iv.get("1.0", "end").strip()
             ivb = iiv.encode("utf-8")
             text = entry.get("1.0", "end-1c")
-            text = BlowFish.mahoa(text, keyb, ivb)
+            text = Triple_DES.mahoa(text, keyb, ivb)
             output.delete("1.0", "end")
             output.insert("end", text)
         except Exception as e:
@@ -458,7 +459,7 @@ def mahoavb3des():
             output.insert("end", "Something wrong")
 
     def setkey():
-        key_length = random.randint(4, 56)
+        key_length = random.randint(16, 24)
         entry_key.delete("1.0", "end")
         random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=key_length))
         entry_key.insert("end", random_key)
@@ -572,7 +573,7 @@ def giaimavb3des():
             iiv = entry_iv.get("1.0", "end").strip()
             ivb = iiv.encode("utf-8")
             text = entry.get("1.0", "end-1c")
-            text = BlowFish.giaima(text, keyb, ivb)
+            text = Triple_DES.giaima(text, keyb, ivb)
             output.delete("1.0", "end")
             output.insert("end", text)
         except Exception as e:

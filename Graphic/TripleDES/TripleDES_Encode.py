@@ -25,11 +25,19 @@ def mahoavb3des(main_content,giatricu):
 
     def get():
         try:
+            # keyy = entry_key.get("1.0", "end").strip()
+            # keyb = keyy.encode("utf-8")
+            # iiv = entry_iv.get("1.0", "end").strip()
+            # ivb = iiv.encode("utf-8")
+            # text = entry.get("1.0", "end-1c")
+
             keyy = entry_key.get("1.0", "end").strip()
-            keyb = keyy.encode("utf-8")
+            keyb = bytes.fromhex(keyy) if all(c in "0123456789abcdefABCDEF" for c in keyy) else keyy.encode("utf-8")
             iiv = entry_iv.get("1.0", "end").strip()
-            ivb = iiv.encode("utf-8")
+            ivb = bytes.fromhex(iiv) if all(c in "0123456789abcdefABCDEF" for c in iiv) else iiv.encode("utf-8")
             text = entry.get("1.0", "end-1c")
+
+
             text = TripleDES_Algorithm.mahoa(text, keyb, ivb)
             output.delete("1.0", "end")
             output.insert("end", text)
@@ -38,8 +46,8 @@ def mahoavb3des(main_content,giatricu):
             output.insert("end", "Something wrong")
 
     def setkey():
-        key_length = random.randint(4, 56)
         entry_key.delete("1.0", "end")
+        key_length = random.randint(16, 24)
         random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=key_length))
         entry_key.insert("end", random_key)
 
@@ -67,7 +75,7 @@ def mahoavb3des(main_content,giatricu):
     label_frame = Frame(frame)
     label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
 
-    label_key = Label(label_frame, text="Nhập key từ 4 đến 56 ký tự:", font=("Arial", 20))
+    label_key = Label(label_frame, text="Nhập key từ 16 đến 24 ký tự:", font=("Arial", 20))
     label_key.pack(side="left", expand=True)
 
     label_iv = Label(label_frame, text="Nhập IV đủ 8 kí tự:", font=("Arial", 20))

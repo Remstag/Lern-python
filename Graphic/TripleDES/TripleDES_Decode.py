@@ -33,11 +33,18 @@ def giaimavb3des(main_content,giatricu):
 
     def get():
         try:
+            # keyy = entry_key.get("1.0", "end").strip()
+            # keyb = keyy.encode("utf-8")
+            # iiv = entry_iv.get("1.0", "end").strip()
+            # ivb = iiv.encode("utf-8")
+            # text = entry.get("1.0", "end-1c")
+
             keyy = entry_key.get("1.0", "end").strip()
-            keyb = keyy.encode("utf-8")
+            keyb = bytes.fromhex(keyy) if all(c in "0123456789abcdefABCDEF" for c in keyy) else keyy.encode("utf-8")
             iiv = entry_iv.get("1.0", "end").strip()
-            ivb = iiv.encode("utf-8")
+            ivb = bytes.fromhex(iiv) if all(c in "0123456789abcdefABCDEF" for c in iiv) else iiv.encode("utf-8")
             text = entry.get("1.0", "end-1c")
+
             text = TripleDES_Algorithm.giaima(text, keyb, ivb)
             output.delete("1.0", "end")
             output.insert("end", text)
