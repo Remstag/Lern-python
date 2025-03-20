@@ -1,9 +1,11 @@
 import tkinter as tk
 from tkinter import Label, Frame, Button
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk, ImageFilter
+
 #cac bien toan cuc
 from Graphic.BlowFish import BlowFish_Decode, BlowFish_Encode
 
+giatricu=""
 frames = {}
 
 def show_frame(page):
@@ -13,6 +15,8 @@ def show_frame(page):
 root = tk.Tk()
 root.title("PYTHON CRYPTION")
 
+# content = Frame(root, bg="white", padx=5, pady=10)
+
 # Lấy kích thước màn hình và set kích thước cửa sổ = 1/2
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
@@ -21,38 +25,40 @@ height = int(screen_height * 0.8)
 x = int((screen_width - width) / 2)
 y = int((screen_height - height) / 2)
 root.geometry(f"{width}x{height}+{x}+{y}")
-root.grid_rowconfigure(1,weight=1)
+
 # Cấu hình grid
-content = Frame(root, bg="red", padx=2, pady=2)
-content.pack(fill="both", expand=True)
-content.grid_rowconfigure(0, weight=1)
-content.grid_rowconfigure(1, weight=8)
-content.grid_rowconfigure(2, weight=1)
-content.grid_columnconfigure(0, weight=1)
-content.grid_columnconfigure(1, weight=9)
+root.grid_rowconfigure(0, weight=1)
+root.grid_rowconfigure(1, weight=8)
+root.grid_rowconfigure(2, weight=1)
+root.grid_columnconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=9)
+
 # Home
-home = Frame(content, bg="lightgray", padx=5, pady=10,bd=1,relief="solid")
+home = Frame(root, bg="lightgray", padx=5, pady=10,bd=1,relief="solid")
 home.grid(row=0, column=0, sticky="nsew")
 but_home = Button(home, text="Home", font=("Arial", 14),background="lightgray",command=lambda: show_frame("home")).pack()
 
+
 # Header
-header = Frame(content, bg="white", height=40, width=50,bd=1,relief="solid")
+header = Frame(root, bg="white", height=40, width=50,bd=1,relief="solid")
 header.grid(row=0, column=1, sticky="nsew", columnspan=2)
 Label(header, text="header", font=("Arial", 14), background="white").pack()
 
 # User
-user = Frame(header, bg="lightgray", padx=10, pady=10,bd=1,relief="solid")
-user.place(relx=0.85, rely=0.01)  # Vị trí góc phải trên
-Label(user, text="user", font=("Arial", 14)).pack()
+user = Frame(header, bg="lightgray", bd=1,relief="solid")
+# user.pack(side="right", padx=5, pady=2)
+user.place(relx=0.8, rely=0, relwidth=0.2, relheight=1.0)  # Vị trí góc phải trên
+Label(user, text="Nguyễn Đăng Hiếu", font=("Arial", 14)).pack(expand=True,fill="both")
+Label(user, text="B22DCAT120", font=("Arial", 14)).pack(expand=True,fill="both")
 
 # Main image (lock)
-main_content = Frame(content, bg="white")
+main_content = Frame(root, bg="white",bd=1,relief="solid")
 main_content.grid(row=1, column=1, sticky="nsew", columnspan=2)
 main_content.grid_rowconfigure(0, weight=1)
 main_content.grid_columnconfigure(0, weight=1)
 
 # Moduls
-moduls = Frame(content, bg="white", padx=5,bd=1,relief="solid")
+moduls = Frame(root, bg="white", padx=5,bd=1,relief="solid")
 moduls.grid(row=1, column=0, sticky="nsew")
 Label(moduls, background="white").pack()
 
@@ -62,10 +68,12 @@ butframe.pack_propagate(False)
 butframe.grid_columnconfigure(0, weight=1)
 butframe.grid_columnconfigure(1, weight=1)
 butframe.grid_columnconfigure(2, weight=1)
-MHBF.mahoavbbf(main_content)
-GMBF.giaimavbbf(main_content)
-frames.update(MHBF.frames)
-frames.update(GMBF.frames)
+
+BlowFish_Encode.mahoavbbf(main_content,giatricu)
+BlowFish_Decode.giaimavbbf(main_content,giatricu)
+frames.update(BlowFish_Encode.frames)
+frames.update(BlowFish_Decode.frames)
+
 spacer = Label(butframe, text=" ", bg="lightblue")
 spacer.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
 
@@ -114,14 +122,15 @@ spacer.grid(row=14, column=1, padx=10, pady=5, sticky="ew")
 spacer = Label(butframe, text=" ", bg="lightblue")
 spacer.grid(row=15, column=1, padx=10, pady=5, sticky="ew")
 # Load ảnh vào (đảm bảo bạn có ảnh sẵn)
-home_page = Frame(main_content, bg="white")
+home_page = Frame(main_content, bg="white",bd=1,relief="solid")
 home_page.grid(row=0, column=0, sticky="nsew")
 try:
     image = Image.open("Image/Designer.jpeg")  # dùng ảnh bạn đã gửi
     image = image.resize((width, height))  # resize ảnh
+    image = image.filter(ImageFilter.GaussianBlur(radius=3))
     photo = ImageTk.PhotoImage(image)
     # Hiển thị ảnh nền full
-    img_label = Label(home_page, image=photo,bd=1,relief="solid")
+    img_label = Label(home_page, image=photo)
     img_label.image = photo
     img_label.place(x=0, y=0, relwidth=1, relheight=1)
 
@@ -129,12 +138,11 @@ except Exception as e:
     Label(home_page, text="(Ảnh không load được)").pack()
 
 # Footer
-footer = Frame(content, bg="lightgray", height=30,bd=1,relief="solid")
+footer = Frame(root, bg="lightgray", height=30,bd=1,relief="solid")
 footer.grid(row=2, sticky="nsew", columnspan=2)
-Label(footer, text="footer", font=("Arial", 14), background="lightgray").pack()
+Label(footer, text="Posts and Telecommunications Institute of Technology", font=("Arial", 14), fg="red", background="lightgray").pack(expand=True,fill="both")
 
-frames["home"]=home_page
-
+frames["home"] = home_page
 root.mainloop()
 
 

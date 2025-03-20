@@ -729,7 +729,7 @@ def kiemtrafile():
     frames["checktv"]=frame
 
 #thiet lap cua so chinh
-win.title("Test")
+win.title("PYTHON EN-DECRYPTION")
 win.geometry("1000x750")
 win.grid_rowconfigure(0, weight=1)
 win.grid_columnconfigure(0, weight=1)
