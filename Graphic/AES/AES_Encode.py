@@ -1,6 +1,13 @@
-
-def mahoavbbf():
-    frame = Frame(win)
+from tkinter import *
+from tkinter import  Button, filedialog
+from Graphic.AES import AES_Algorithm
+import random
+import os
+import string
+import secrets
+frames={}
+def mahoavb(main_content,giatricu):
+    frame = Frame(main_content)
     frame.grid(row=0, column=0, sticky="nsew")
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_columnconfigure(0, weight=1)
@@ -24,7 +31,7 @@ def mahoavbbf():
             iiv = entry_iv.get("1.0", "end").strip()
             ivb = iiv.encode("utf-8")
             text = entry.get("1.0", "end-1c")
-            text = BlowFish.mahoa(text, keyb, ivb)
+            text = AES_Algorithm.mahoa(text, keyb, ivb)
             output.delete("1.0", "end")
             output.insert("end", text)
         except Exception as e:
@@ -38,7 +45,7 @@ def mahoavbbf():
 
     def setiv():
         entry_iv.delete("1.0", "end")
-        random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
         entry_iv.insert("end", random_iv)
 
     def mhfile():
@@ -63,7 +70,7 @@ def mahoavbbf():
     label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
     label_key.pack(side="left", expand=True)
 
-    label_iv = Label(label_frame, text="Nhập IV (đủ 8 kí tự):", font=("Arial", 20))
+    label_iv = Label(label_frame, text="Nhập IV (đủ 16 kí tự):", font=("Arial", 20))
     label_iv.pack(side="left", expand=True)
 
     text_frame = Frame(frame)
@@ -77,9 +84,9 @@ def mahoavbbf():
     spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
     spacer.pack(pady=5)
     button = Button(frame, text="Tạo key tự động", command=setkey)
-    button.place(x=200, y=90)
+    button.place(x=250, y=90)
     button = Button(frame, text="Tạo IV tự động", command=setiv)
-    button.place(x=700, y=90)
+    button.place(x=950, y=90)
     labelbg = Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
     labelbg.pack(pady=5)
 
@@ -90,7 +97,7 @@ def mahoavbbf():
     spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
     spacer.pack(pady=5)
 
-    button = Button(frame, text="Mã hóa với BlowFish", command=get)
+    button = Button(frame, text="Mã hóa với AES", command=get)
     button.place(x=300, y=310)
 
     button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
@@ -111,4 +118,4 @@ def mahoavbbf():
     output = Text(frame, wrap="word", height=10, width=50)
     output.pack(fill="x", padx=5, pady=5)
 
-    frames["mhvbBF"] = frame
+    frames["mhvbaes"] = frame

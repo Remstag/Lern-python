@@ -4,7 +4,8 @@ from PIL import Image, ImageTk, ImageFilter
 
 #cac bien toan cuc
 from Graphic.BlowFish import BlowFish_Decode, BlowFish_Encode
-
+from AES import AES_Encode, AES_Decode
+from TripleDES import TripleDES_Encode, TripleDES_Decode
 giatricu=""
 frames = {}
 
@@ -69,24 +70,32 @@ butframe.grid_columnconfigure(0, weight=1)
 butframe.grid_columnconfigure(1, weight=1)
 butframe.grid_columnconfigure(2, weight=1)
 
+AES_Encode.mahoavb(main_content,giatricu)
+AES_Decode.giaimavb(main_content,giatricu)
 BlowFish_Encode.mahoavbbf(main_content,giatricu)
 BlowFish_Decode.giaimavbbf(main_content,giatricu)
+TripleDES_Encode.mahoavb3des(main_content,giatricu)
+TripleDES_Decode.giaimavb3des(main_content, giatricu)
+frames.update(AES_Encode.frames)
+frames.update(AES_Decode.frames)
 frames.update(BlowFish_Encode.frames)
 frames.update(BlowFish_Decode.frames)
+frames.update(TripleDES_Encode.frames)
+frames.update(TripleDES_Decode.frames)
 
 spacer = Label(butframe, text=" ", bg="lightblue")
 spacer.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
 
 #Ma hoa - giai ma AES
-b1 = Button(butframe, text="Mã hóa AES", font=("Arial",13))
+b1 = Button(butframe, text="Mã hóa AES", font=("Arial",13),command=lambda: show_frame("mhvbaes"))
 b1.grid(row=1,column = 1, padx=10, pady=5,sticky="ew")
-b2 = Button(butframe, text="Giải mã AES", font=("Arial",13))
+b2 = Button(butframe, text="Giải mã AES", font=("Arial",13),command=lambda: show_frame("gmvbaes"))
 b2.grid(row=2, column=1, padx=10, pady=5,sticky="ew")
 
 #Ma hoa - giai ma 3-DES
-b3 = Button(butframe, text="Mã hóa 3-DES", font=("Arial",13))
+b3 = Button(butframe, text="Mã hóa 3-DES", font=("Arial",13),command=lambda: show_frame("mhvb3des"))
 b3.grid(row=3, column=1, padx=10, pady=5,sticky="ew")
-b4 = Button(butframe, text="Giải mã 3-DES", font=("Arial",13))
+b4 = Button(butframe, text="Giải mã 3-DES", font=("Arial",13),command=lambda: show_frame("gmvb3des"))
 b4.grid(row=4, column=1, padx=10, pady=5,sticky="ew")
 
 #Ma hoa - giai ma Blowfish
