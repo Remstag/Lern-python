@@ -63,7 +63,7 @@ def giaimavb3des(main_content,giatricu):
     label_frame = Frame(frame)
     label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
 
-    label_key = Label(label_frame, text="Nhập key từ 4 đến 56 ký tự:", font=("Arial", 20))
+    label_key = Label(label_frame, text="Nhập key từ 16 đến 24 ký tự:", font=("Arial", 20))
     label_key.pack(side="left", expand=True)
 
     label_iv = Label(label_frame, text="Nhập IV đủ 8 kí tự:", font=("Arial", 20))

@@ -3,7 +3,8 @@ from tkinter import  Button, filedialog
 from Graphic.TripleDES import TripleDES_Algorithm
 import random
 import string
-
+from Crypto.Random import get_random_bytes
+from Crypto.Cipher import DES3
 frames={}
 def mahoavb3des(main_content,giatricu):
     frame = Frame(main_content)
@@ -46,9 +47,10 @@ def mahoavb3des(main_content,giatricu):
             output.insert("end", "Something wrong")
 
     def setkey():
+        lengthkey = [16,24]
+        key_length = random.randint(0, 1)
         entry_key.delete("1.0", "end")
-        key_length = random.randint(16, 24)
-        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=key_length))
+        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=lengthkey[key_length]))
         entry_key.insert("end", random_key)
 
     def setiv():
