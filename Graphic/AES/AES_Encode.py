@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import  Button, filedialog
+
+from PIL.ImageOps import expand
+
 from Graphic.AES import AES_Algorithm
 import random
 import os
@@ -10,6 +13,9 @@ def mahoavb(main_content,giatricu):
     frame = Frame(main_content)
     frame.grid(row=0, column=0, sticky="nsew")
     frame.grid_rowconfigure(0, weight=1)
+    frame.grid_rowconfigure(1, weight=1)
+    frame.grid_rowconfigure(2, weight=1)
+    frame.grid_rowconfigure(3, weight=1)
     frame.grid_columnconfigure(0, weight=1)
 
     def sett():
@@ -64,58 +70,83 @@ def mahoavb(main_content,giatricu):
             with open(file_path, "w", encoding="utf-8") as file:
                 file.write(output.get("1.0", "end"))
 
-    label_frame = Frame(frame)
-    label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
+    #Frame include nhapkey, nhapiv: label, text, button
+    nhapkeyiv_frame = Frame(frame,bg="yellow",padx=2,pady=2)
+    nhapkeyiv_frame.grid(row=0,column=0,sticky="nsew", columnspan=2)
 
-    label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
-    label_key.pack(side="left", expand=True)
+    #Frame include nhapvanban
+    nhapvanban_frame = Frame(frame,bg="red", padx=2, pady=2)
+    nhapvanban_frame.grid(row=1,column=0,sticky="nsew", columnspan=2)
 
-    label_iv = Label(label_frame, text="Nhập IV (đủ 16 kí tự):", font=("Arial", 20))
-    label_iv.pack(side="left", expand=True)
+    #Frame include button tinh nang
+    tinhnang_frame = Frame(frame,bg="yellow",padx=2,pady=2)
+    tinhnang_frame.grid(row=2,column=0,sticky="nsew", columnspan=2)
 
-    text_frame = Frame(frame)
-    text_frame.pack(side="top", fill="x", pady=5)
+    #Frame include vanbanmahoa
+    vanbanmahoa_frame = Frame(frame,bg="red", padx=2, pady=2)
+    vanbanmahoa_frame.grid(row=3,column=0,sticky="nsew", columnspan=2)
 
-    entry_key = Text(text_frame, wrap="word", height=2, width=60)
-    entry_key.pack(side="left", expand=True, padx=5)
-
-    entry_iv = Text(text_frame, wrap="word", height=2, width=60)
-    entry_iv.pack(side="left", expand=True, padx=5)
-    spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
-    spacer.pack(pady=5)
-    button = Button(frame, text="Tạo key tự động", command=setkey)
-    button.place(x=250, y=90)
-    button = Button(frame, text="Tạo IV tự động", command=setiv)
-    button.place(x=950, y=90)
-    labelbg = Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
-    labelbg.pack(pady=5)
-
-    entry = Text(frame, wrap="word", height=8, width=50)
-    entry.pack(fill="x", padx=5, pady=5)
-    entry.pack(pady=5)
-
-    spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
-    spacer.pack(pady=5)
-
-    button = Button(frame, text="Mã hóa với AES", command=get)
-    button.place(x=300, y=310)
-
-    button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
-    button.place(x=500, y=310)
-
-    button = Button(frame, text="Tạm lưu", command=tamluu)
-    button.place(x=600, y=310)
-
-    button = Button(frame, text="Nhập file", command=mhfile)
-    button.place(x=700, y=310)
-
-    button = Button(frame, text="Mã hóa tiếp", command=sett)
-    button.place(x=800, y=310)
-
-    button = Button(frame, text="Lưu vào file", command=savefile)
-    button.place(x=900, y=310)
-
-    output = Text(frame, wrap="word", height=10, width=50)
-    output.pack(fill="x", padx=5, pady=5)
+    # #Frame label nhapkey, nhapiv
+    # label_frame = Frame(frame)
+    # label_frame.pack(side="top", fill="x")  # Dùng fill="x" để giãn đều
+    #
+    # label_key = Label(label_frame, text="Nhập key (đủ 32 kí tự):", font=("Arial", 20))
+    # label_key.pack(side="left", expand=True)
+    #
+    # label_iv = Label(label_frame, text="Nhập IV (đủ 16 kí tự):", font=("Arial", 20))
+    # label_iv.pack(side="left", expand=True)
+    #
+    # #Frame text nhapkey, nhapiv
+    # text_frame = Frame(frame)
+    # text_frame.pack(side="top", fill="x", pady=5)
+    #
+    # entry_key = Text(text_frame, wrap="word", height=2, width=60)
+    # entry_key.pack(side="left", expand=True, padx=5)
+    #
+    # entry_iv = Text(text_frame, wrap="word", height=2, width=60)
+    # entry_iv.pack(side="left", expand=True, padx=5)
+    #
+    #
+    # spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
+    # spacer.pack(pady=5)
+    #
+    # #button nhapkey nhapiv
+    # button = Button(frame, text="Tạo key tự động", command=setkey)
+    # button.place(x=250, y=90)
+    # button = Button(frame, text="Tạo IV tự động", command=setiv)
+    # button.place(x=950, y=90)
+    #
+    # labelbg = Label(frame, text="Nhập văn bản thử đi:", font=("Arial", 20))
+    # labelbg.pack(pady=5)
+    #
+    # entry = Text(frame, wrap="word", height=8, width=50)
+    # entry.pack(fill="x", padx=5, pady=5)
+    # entry.pack(pady=5)
+    #
+    # spacer = Label(frame, text=" ")  # Một label rỗng để tạo khoảng cách
+    # spacer.pack(pady=5)
+    #
+    # button = Button(frame, text="Mã hóa với AES", command=get)
+    # button.place(x=300, y=310)
+    #
+    # button = Button(frame, text="Lấy lại giá trị", command=settlaigiatri)
+    # button.place(x=500, y=310)
+    #
+    # button = Button(frame, text="Tạm lưu", command=tamluu)
+    # button.place(x=600, y=310)
+    #
+    # button = Button(frame, text="Nhập file", command=mhfile)
+    # button.place(x=700, y=310)
+    #
+    # button = Button(frame, text="Mã hóa tiếp", command=sett)
+    # button.place(x=800, y=310)
+    #
+    # button = Button(frame, text="Lưu vào file", command=savefile)
+    # button.place(x=900, y=310)
+    #
+    # labelbg = Label(frame, text="Văn bản đã mã hóa:", font=("Arial", 20))
+    # labelbg.pack(pady=5)
+    # output = Text(frame, wrap="word", height=10, width=50)
+    # output.pack(fill="x", padx=5, pady=5)
 
     frames["mhvbaes"] = frame
