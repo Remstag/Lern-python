@@ -18,72 +18,95 @@ def mahoavb(main_content,giatricu):
     frame.grid_rowconfigure(3, weight=1)
     frame.grid_columnconfigure(0, weight=1)
 
-    def sett():
-        entry.delete("1.0", "end")
-        entry.insert("end", output.get("1.0", "end"))
-
-    def settlaigiatri():
-        entry.delete("1.0", "end")
-        entry.insert("end", giatricu)
-
-    def tamluu():
-        global giatricu
-        giatricu = output.get("1.0", "end")
-
-    def get():
-        try:
-            keyy = entry_key.get("1.0", "end").strip()
-            keyb = keyy.encode("utf-8")
-            iiv = entry_iv.get("1.0", "end").strip()
-            ivb = iiv.encode("utf-8")
-            text = entry.get("1.0", "end-1c")
-            text = AES_Algorithm.mahoa(text, keyb, ivb)
-            output.delete("1.0", "end")
-            output.insert("end", text)
-        except Exception as e:
-            output.delete("1.0", "end")
-            output.insert("end", "Lỗi rồi duma")
-
-    def setkey():
-        entry_key.delete("1.0", "end")
-        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
-        entry_key.insert("end", random_key)
-
-    def setiv():
-        entry_iv.delete("1.0", "end")
-        random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
-        entry_iv.insert("end", random_iv)
-
-    def mhfile():
-        file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
-        if file_path:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = f.read()
-            entry.delete("1.0", "end")
-            entry.insert("end", data)
-
-    def savefile():
-        file_path = filedialog.asksaveasfilename(defaultextension="txt",
-                                                 filetypes=[("Text", "*txt"),
-                                                            ("All file", "*.*")])
-        if file_path:
-            with open(file_path, "w", encoding="utf-8") as file:
-                file.write(output.get("1.0", "end"))
+    # def sett():
+    #     entry.delete("1.0", "end")
+    #     entry.insert("end", output.get("1.0", "end"))
+    #
+    # def settlaigiatri():
+    #     entry.delete("1.0", "end")
+    #     entry.insert("end", giatricu)
+    #
+    # def tamluu():
+    #     global giatricu
+    #     giatricu = output.get("1.0", "end")
+    #
+    # def get():
+    #     try:
+    #         keyy = entry_key.get("1.0", "end").strip()
+    #         keyb = keyy.encode("utf-8")
+    #         iiv = entry_iv.get("1.0", "end").strip()
+    #         ivb = iiv.encode("utf-8")
+    #         text = entry.get("1.0", "end-1c")
+    #         text = AES_Algorithm.mahoa(text, keyb, ivb)
+    #         output.delete("1.0", "end")
+    #         output.insert("end", text)
+    #     except Exception as e:
+    #         output.delete("1.0", "end")
+    #         output.insert("end", "Lỗi rồi duma")
+    #
+    # def setkey():
+    #     entry_key.delete("1.0", "end")
+    #     random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+    #     entry_key.insert("end", random_key)
+    #
+    # def setiv():
+    #     entry_iv.delete("1.0", "end")
+    #     random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+    #     entry_iv.insert("end", random_iv)
+    #
+    # def mhfile():
+    #     file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
+    #     if file_path:
+    #         with open(file_path, "r", encoding="utf-8") as f:
+    #             data = f.read()
+    #         entry.delete("1.0", "end")
+    #         entry.insert("end", data)
+    #
+    # def savefile():
+    #     file_path = filedialog.asksaveasfilename(defaultextension="txt",
+    #                                              filetypes=[("Text", "*txt"),
+    #                                                         ("All file", "*.*")])
+    #     if file_path:
+    #         with open(file_path, "w", encoding="utf-8") as file:
+    #             file.write(output.get("1.0", "end"))
 
     #Frame include nhapkey, nhapiv: label, text, button
-    nhapkeyiv_frame = Frame(frame,bg="yellow",padx=2,pady=2)
-    nhapkeyiv_frame.grid(row=0,column=0,sticky="nsew", columnspan=2)
-
+    nhapkeyiv_frame = Frame(frame,padx=2,pady=20,bd=1,relief="solid")
+    nhapkeyiv_frame.grid(row=0,column=0,sticky="nsew")
+    for i in range(7):
+        if i%2==0:
+            nhapkeyiv_frame.grid_rowconfigure(i, weight=1)
+        else:
+            nhapkeyiv_frame.grid_rowconfigure(i, weight=3)
+    for i in range(5):
+        if i%2==0:
+            nhapkeyiv_frame.grid_columnconfigure(i, weight=1)
+        else:
+            nhapkeyiv_frame.grid_columnconfigure(i, weight=2)
+    #Label key, text key, button key
+    label_key = Label(nhapkeyiv_frame, text="KEY", font=("Arial",20))
+    label_key.grid(row=1,column=1)
+    text_key = Text(nhapkeyiv_frame, wrap="word",font=("Arial",14), height=2, width=20)
+    text_key.grid(row=3,column=1,sticky="ew")
+    button_key = Button(nhapkeyiv_frame, text="Tạo key tự động", font=("Arial",14))
+    button_key.grid(row=5,column=1)
+    #Label iv, text iv, button iv
+    label_iv = Label(nhapkeyiv_frame, text="IV", font=("Arial",20))
+    label_iv.grid(row=1,column=3)
+    text_iv = Text(nhapkeyiv_frame, wrap="word",font=("Arial",14), height=2, width=20)
+    text_iv.grid(row=3,column=3,sticky="ew")
+    button_iv = Button(nhapkeyiv_frame, text="Tạo iv tự động", font=("Arial",14))
+    button_iv.grid(row=5,column=3)
     #Frame include nhapvanban
-    nhapvanban_frame = Frame(frame,bg="red", padx=2, pady=2)
+    nhapvanban_frame = Frame(frame,bg="red", padx=2, pady=20,bd=1,relief="solid")
     nhapvanban_frame.grid(row=1,column=0,sticky="nsew", columnspan=2)
 
     #Frame include button tinh nang
-    tinhnang_frame = Frame(frame,bg="yellow",padx=2,pady=2)
+    tinhnang_frame = Frame(frame,bg="yellow",padx=2,pady=20,bd=1,relief="solid")
     tinhnang_frame.grid(row=2,column=0,sticky="nsew", columnspan=2)
 
     #Frame include vanbanmahoa
-    vanbanmahoa_frame = Frame(frame,bg="red", padx=2, pady=2)
+    vanbanmahoa_frame = Frame(frame,bg="red", padx=2, pady=20,bd=1,relief="solid")
     vanbanmahoa_frame.grid(row=3,column=0,sticky="nsew", columnspan=2)
 
     # #Frame label nhapkey, nhapiv
