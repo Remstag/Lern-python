@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 import BlowFish
 import random, string
 #cac bien toan cuc
-import MHBF, GMBF, ENAES,GMAES, checktv, MHDES, GM3DES,xoafiledod
+import MHBF, GMBF, ENAES,GMAES, checktv, MHDES, GM3DES,xoafiledod, xoafilegutmann
 frames = {}
 def show_frame(page):
     frame = frames[page]
@@ -86,6 +86,10 @@ frames.update(checktv.frames)
 
 xoafiledod.xoafil(main_content)
 frames.update(xoafiledod.frames)
+
+xoafilegutmann.xoafilegutmann(main_content)
+frames.update(xoafilegutmann.frames)
+
 spacer = Label(butframe, text=" ", bg="lightblue")  # Một label rỗng để tạo khoảng cách
 spacer.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
 b1 = Button(butframe, text="Mã hóa AES",command=lambda: show_frame("mhvb"))
@@ -103,7 +107,7 @@ b6.grid(row=6, column=1, padx=10, pady=5,sticky="ew")
 
 b7 = Button(butframe, text="Xóa File theo chuẩn DoD",command=lambda: show_frame("xfvsdod"))
 b7.grid(row=7, column=1, padx=10, pady=5,sticky="ew")
-b8 = Button(butframe, text="Xóa File theo chuẩn Gutmann")
+b8 = Button(butframe, text="Xóa File theo chuẩn Gutmann",command=lambda: show_frame("xfvsgutmann"))
 b8.grid(row=8, column=1, padx=10, pady=5,sticky="ew")
 b9 = Button(butframe, text="Kiểm tra tính toàn vẹn",command=lambda: show_frame("checktv"))
 b9.grid(row=9, column=1, padx=10, pady=5,sticky="ew")
