@@ -14,8 +14,6 @@ def mahoavb(main_content,giatricu):
     frame.grid(row=0, column=0, sticky="nsew")
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_rowconfigure(1, weight=3)
-    # frame.grid_rowconfigure(2, weight=1)
-    # frame.grid_rowconfigure(3, weight=1)
     frame.grid_columnconfigure(0, weight=1)
 
     def sett():
