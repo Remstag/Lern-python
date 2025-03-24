@@ -3,6 +3,16 @@ from Crypto.Util.Padding import pad, unpad
 from Crypto.Random import get_random_bytes
 import base64
 
+# # Khóa bí mật (4 - 56 byte)
+# key = b'lKSLDnnskjcLKADNflksjdnlksnvksajdf'
+#
+# # Dữ liệu cần mã hóa
+# text = b'This is secret data.'
+#
+# # Tạo IV ngẫu nhiên (Blowfish sử dụng block size = 8 bytes)
+# iv = get_random_bytes(Blowfish.block_size)
+
+
 def mahoa(text, key, iv):
     # Chuyển text sang bytes
     data = text.encode('utf-8')

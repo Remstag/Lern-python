@@ -5,9 +5,7 @@ import BlowFish
 import random, string
 #cac bien toan cuc
 import MHBF, GMBF, ENAES,GMAES, checktv, MHDES, GM3DES,xoafiledod
-giatricu=""
 frames = {}
-
 def show_frame(page):
     frame = frames[page]
     frame.tkraise()  # Đưa frame lên trên
@@ -18,10 +16,10 @@ root.title("PYTHON CRYPTION")
 # Lấy kích thước màn hình và set kích thước cửa sổ = 1/2
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-width = screen_width // 1
-height = screen_height // 1
-x = (screen_width - width) // 1
-y = (screen_height - height) // 1
+width = screen_width*100 // 135
+height = screen_height*100 // 135
+x = (screen_width - width) // 2
+y = (screen_height - height) // 2
 root.geometry(f"{width}x{height}+{x}+{y}")
 
 # Cấu hình grid

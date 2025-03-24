@@ -3,7 +3,6 @@ import os
 quyen=""
 status="❌ Xóa file thất bại"
 def checkquyen(file_path):
-    print(file_path)
     global quyen
     if not os.path.exists(file_path):
         quyen= "❌ File không tồn tại!"
