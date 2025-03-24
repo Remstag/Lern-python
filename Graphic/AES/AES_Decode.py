@@ -113,7 +113,7 @@ def giaimavb(main_content,giatricu):
         tinhnang_frame.grid_rowconfigure(i, weight=1)
     for i in range(3):
         tinhnang_frame.grid_columnconfigure(i, weight=1)
-    button = Button(tinhnang_frame, text="Mã hóa với AES", font=("Arial", 14), command=get)
+    button = Button(tinhnang_frame, text="Giải mã", font=("Arial", 14), command=get)
     button.grid(row=0, column=1, padx=5, pady=5, sticky="nsew")
 
     button = Button(tinhnang_frame, text="Lấy lại giá trị", font=("Arial", 14), command=settlaigiatri)
@@ -125,7 +125,7 @@ def giaimavb(main_content,giatricu):
     button = Button(tinhnang_frame, text="Nhập file", font=("Arial", 14), command=gmfile)
     button.grid(row=3, column=1, padx=5, pady=5, sticky="nsew")
 
-    button = Button(tinhnang_frame, text="Mã hóa tiếp", font=("Arial", 14), command=sett)
+    button = Button(tinhnang_frame, text="Giải mã tiếp", font=("Arial", 14), command=sett)
     button.grid(row=4, column=1, padx=5, pady=5, sticky="nsew")
 
     button = Button(tinhnang_frame, text="Lưu vào file", font=("Arial", 14), command=savefile)

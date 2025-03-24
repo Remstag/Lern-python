@@ -46,11 +46,15 @@ def mahoavb(main_content,giatricu):
         entry_key.delete("1.0", "end")
         random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
         entry_key.insert("end", random_key)
+        entry_key.tag_add("custom_font", "1.0", "end")
+        entry_key.tag_configure("custom_font", font=("Arial", 13))
 
     def setiv():
         entry_iv.delete("1.0", "end")
         random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
         entry_iv.insert("end", random_iv)
+        entry_iv.tag_add("custom_font", "1.0", "end")
+        entry_iv.tag_configure("custom_font", font=("Arial", 13))
 
     def mhfile():
         file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
@@ -86,14 +90,14 @@ def mahoavb(main_content,giatricu):
     label_key.grid(row=1,column=1,sticky="w")
     entry_key = Text(nhapkeyiv_frame, wrap="word", height=2, width=60)
     entry_key.grid(row=1,column=3)
-    button_key = Button(nhapkeyiv_frame, text="Tạo key tự động", font=("Arial",14),command=setkey)
+    button_key = Button(nhapkeyiv_frame, text="Tạo key", font=("Arial",14),command=setkey)
     button_key.grid(row=1,column=5,sticky="ew")
     #Label iv, text iv, button iv
     label_iv = Label(nhapkeyiv_frame, text="IV", font=("Arial",20))
     label_iv.grid(row=3,column=1,sticky="w")
     entry_iv = Text(nhapkeyiv_frame, wrap="word", height=2, width=60)
     entry_iv.grid(row=3, column=3)
-    button_iv = Button(nhapkeyiv_frame, text="Tạo iv tự động", font=("Arial",14), command=setiv)
+    button_iv = Button(nhapkeyiv_frame, text="Tạo iv", font=("Arial",14), command=setiv)
     button_iv.grid(row=3,column=5,sticky="ew")
 
     #Frame include nhapvanban, vanbanmahoa, tinhnang
@@ -126,7 +130,7 @@ def mahoavb(main_content,giatricu):
         tinhnang_frame.grid_rowconfigure(i,weight=1)
     for i in range(3):
         tinhnang_frame.grid_columnconfigure(i,weight=1)
-    button = Button(tinhnang_frame, text="Mã hóa với AES", font=("Arial",14),command=get)
+    button = Button(tinhnang_frame, text="Mã hóa", font=("Arial",14),command=get)
     button.grid(row=0,column=1,padx=5, pady=5,sticky="nsew")
 
     button = Button(tinhnang_frame, text="Lấy lại giá trị", font=("Arial",14),command=settlaigiatri)
