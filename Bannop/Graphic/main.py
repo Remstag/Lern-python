@@ -2,12 +2,14 @@ import tkinter as tk
 from tkinter import Label, Frame, Button
 from PIL import Image, ImageTk, ImageFilter
 
+from Bannop.Graphic.MatKhauManh.TaoMatKhau import taomatkhau
 #cac bien toan cuc
 from Graphic.BlowFish import BlowFish_Decode, BlowFish_Encode
 from AES import AES_Encode, AES_Decode
 from TripleDES import TripleDES_Encode, TripleDES_Decode
 from Graphic.XoaFile import xoafiledod, xoafilegutmann
 from Graphic.KiemTraTinhToanVen import checktv
+from MatKhauManh import TaoMatKhau
 frames = {}
 def show_frame(page):
     frame = frames[page]
@@ -93,6 +95,9 @@ frames.update(xoafilegutmann.frames)
 
 checktv.kiemtrafile(main_content)
 frames.update(checktv.frames)
+
+TaoMatKhau.taomatkhau(main_content)
+frames.update(TaoMatKhau.frames)
 
 spacer = Label(butframe, text=" ", bg="lightblue")
 spacer.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
