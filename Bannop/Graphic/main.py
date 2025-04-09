@@ -2,12 +2,13 @@ import tkinter as tk
 from tkinter import Label, Frame, Button
 from PIL import Image, ImageTk, ImageFilter
 
+
 #cac bien toan cuc
 from Graphic.BlowFish import BlowFish_Decode, BlowFish_Encode
 from AES import AES_Encode, AES_Decode
 from TripleDES import TripleDES_Encode, TripleDES_Decode
 from Graphic.XoaFile import xoafiledod, xoafilegutmann
-from Graphic.KiemTraTinhToanVen import checktv
+from Graphic.KiemTraTinhToanVen import checktv, taomabam
 from MatKhauManh import TaoMatKhau
 frames = {}
 def show_frame(page):
@@ -51,8 +52,8 @@ header_label.pack(expand=True)
 user = Frame(header, bg="lightgray", bd=1,relief="solid")
 # user.pack(side="right", padx=5, pady=2)
 user.place(relx=0.8, rely=0, relwidth=0.2, relheight=1.0)  # Vị trí góc phải trên
-Label(user, text="Nguyễn Đăng Hiếu", font=("Arial", 14)).pack(expand=True,fill="both")
-Label(user, text="B22DCAT120", font=("Arial", 14)).pack(expand=True,fill="both")
+Label(user, text="BTL Python", font=("Arial", 14)).pack(expand=True,fill="both")
+Label(user, text="", font=("Arial", 14)).pack(expand=True,fill="both")
 
 # Main image (lock)
 main_content = Frame(root, bg="white",bd=1,relief="solid")
@@ -94,6 +95,8 @@ frames.update(xoafilegutmann.frames)
 
 checktv.kiemtrafile(main_content)
 frames.update(checktv.frames)
+taomabam.xoafil(main_content)
+frames.update(taomabam.frames)
 
 TaoMatKhau.taomatkhau(main_content)
 frames.update(TaoMatKhau.frames)
@@ -135,8 +138,11 @@ b9.grid(row=9, column=1, padx=10, pady=5,sticky="ew")
 b10 = Button(butframe, text="Mật khẩu", font=("Arial",13),command=lambda: [update_header("Mật khẩu"),show_frame("matkhau")])
 b10.grid(row=10, column=1, padx=10, pady=5,sticky="ew")
 
-spacer = Label(butframe, text=" ",bg="lightblue")
-spacer.grid(row=11, column=1, padx=10, pady=5,sticky="ew")
+b11 = Button(butframe, text="Tạo file mã băm", font=("Arial",13),command=lambda: [update_header("Mã băm"),show_frame("taombb")])
+b11.grid(row=11, column=1, padx=10, pady=5,sticky="ew")
+
+
+
 spacer = Label(butframe, text=" ", bg="lightblue")
 spacer.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
 spacer = Label(butframe, text=" ", bg="lightblue")
