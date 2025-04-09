@@ -53,7 +53,7 @@ user = Frame(header, bg="lightgray", bd=1,relief="solid")
 # user.pack(side="right", padx=5, pady=2)
 user.place(relx=0.8, rely=0, relwidth=0.2, relheight=1.0)  # Vị trí góc phải trên
 Label(user, text="BTL Python", font=("Arial", 14)).pack(expand=True,fill="both")
-Label(user, text="", font=("Arial", 14)).pack(expand=True,fill="both")
+Label(user, text="Nhóm 12", font=("Arial", 14)).pack(expand=True,fill="both")
 
 # Main image (lock)
 main_content = Frame(root, bg="white",bd=1,relief="solid")
@@ -155,9 +155,9 @@ spacer.grid(row=15, column=1, padx=10, pady=5, sticky="ew")
 home_page = Frame(main_content, bg="white",bd=1,relief="solid")
 home_page.grid(row=0, column=0, sticky="nsew")
 try:
-    image = Image.open("Image/Designer.jpeg")  # dùng ảnh bạn đã gửi
-    image = image.resize((width, height))  # resize ảnh
-    image = image.filter(ImageFilter.GaussianBlur(radius=3))
+    image = Image.open("Image/Background2.jpg")  # dùng ảnh bạn đã gửi
+    image = image.resize((height, height))  # resize ảnh
+    image = image.filter(ImageFilter.GaussianBlur(radius=0))
     photo = ImageTk.PhotoImage(image)
     # Hiển thị ảnh nền full
     img_label = Label(home_page, image=photo)
