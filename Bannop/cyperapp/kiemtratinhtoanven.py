@@ -11,14 +11,3 @@ def shaa256(file_path):
     except Exception as e:
         status="Có lỗi xảy ra!!"
         return None
-<<<<<<< HEAD
-def travevb(file_path):
-    global status
-    try:
-        with open(file_path, "r", encoding="utf-8") as file:
-            return file.readline().strip()
-    except Exception as e:
-        status = "Có lỗi xảy ra!!"
-        return None
-=======
->>>>>>> 7a314405073b031d1d6a6d9b438ab2076bf488d2
