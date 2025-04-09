@@ -6,6 +6,8 @@ import pyperclip
 
 frames={}
 def taomatkhau(main_content):
+
+    # Các chỉ số đánh giá độ mạnh yếu của mật khẩu
     def strong_pass(password):
         cnt_upper, cnt_lower, cnt_num, cnt_special = 0,0,0,0
         for i in password:
