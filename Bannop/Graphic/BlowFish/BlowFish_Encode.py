@@ -46,14 +46,15 @@ def mahoavbbf(main_content):
 
     def setkey():
         entry_key.delete("1.0", "end")
-        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+        a=random.randint(4, 56)
+        random_key = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=a))
         entry_key.insert("end", random_key)
         entry_key.tag_add("custom_font", "1.0", "end")
         entry_key.tag_configure("custom_font", font=("Arial", 13))
 
     def setiv():
         entry_iv.delete("1.0", "end")
-        random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        random_iv = ''.join(random.choices(string.ascii_letters + string.digits +string.punctuation, k=8))
         entry_iv.insert("end", random_iv)
         entry_iv.tag_add("custom_font", "1.0", "end")
         entry_iv.tag_configure("custom_font", font=("Arial", 13))
