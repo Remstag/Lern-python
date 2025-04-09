@@ -5,7 +5,6 @@ import base64
 #IV=b'ThisIsAnIV123456'
 def mahoa(texxt, keyy, IV):
     texxt=str(texxt)
-
     cipher=AES.new(keyy,AES.MODE_CBC,IV)
     damahoa=cipher.encrypt(pad(texxt.encode(),AES.block_size))
    # return base64.b64encode(damahoa).decode()
