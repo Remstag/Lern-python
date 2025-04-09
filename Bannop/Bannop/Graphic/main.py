@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import Label, Frame, Button
 from PIL import Image, ImageTk, ImageFilter
 
-from Bannop.Graphic.MatKhauManh.TaoMatKhau import taomatkhau
+from MatKhauManh.TaoMatKhau import taomatkhau
 #cac bien toan cuc
 from Graphic.BlowFish import BlowFish_Decode, BlowFish_Encode
 from AES import AES_Encode, AES_Decode
