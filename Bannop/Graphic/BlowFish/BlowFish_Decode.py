@@ -102,7 +102,7 @@ def giaimavbbf(main_content):
     nhapvanban_frame.grid_columnconfigure(2, weight=1)
     Frame_label_nvb = Frame(nhapvanban_frame)
     Frame_label_nvb.grid(row=0, column=1, sticky="ew")
-    label_nvb = Label(Frame_label_nvb, text="Bản rõ", font=("Arial", 20))
+    label_nvb = Label(Frame_label_nvb, text="Bản mã hóa", font=("Arial", 20))
     label_nvb.pack(side="left", fill="y")
 
     entry = Text(nhapvanban_frame, wrap="word", height=10)
@@ -144,7 +144,7 @@ def giaimavbbf(main_content):
 
     Frame_label_vbmh = Frame(vanbanmahoa_frame)
     Frame_label_vbmh.grid(row=0, column=1, sticky="ew")
-    label_vbmh = Label(Frame_label_vbmh, text="Bản mã hóa", font=("Arial", 20))
+    label_vbmh = Label(Frame_label_vbmh, text="Bản giải mã", font=("Arial", 20))
     label_vbmh.pack(side="left", fill="y")
     output = Text(vanbanmahoa_frame, wrap="word", height=10)
     output.grid(row=2, column=1, rowspan=2, sticky="ew")

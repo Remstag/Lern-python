@@ -155,9 +155,9 @@ spacer.grid(row=15, column=1, padx=10, pady=5, sticky="ew")
 home_page = Frame(main_content, bg="white",bd=1,relief="solid")
 home_page.grid(row=0, column=0, sticky="nsew")
 try:
-    image = Image.open("Image/Designer.jpeg")  # dùng ảnh bạn đã gửi
-    image = image.resize((width, height))  # resize ảnh
-    image = image.filter(ImageFilter.GaussianBlur(radius=3))
+    image = Image.open("Image/Background.jpg")  # dùng ảnh bạn đã gửi
+    image = image.resize((height, height))  # resize ảnh
+    image = image.filter(ImageFilter.GaussianBlur(radius=0))
     photo = ImageTk.PhotoImage(image)
     # Hiển thị ảnh nền full
     img_label = Label(home_page, image=photo)

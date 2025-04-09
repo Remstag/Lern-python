@@ -1,8 +1,10 @@
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, Frame, filedialog
 import random
 import string
 import pyperclip
+from numpy.ma.extras import column_stack
+
 
 frames={}
 def taomatkhau(main_content):
@@ -60,83 +62,211 @@ def taomatkhau(main_content):
         password_entry.delete(0, tk.END)
         password_entry.insert(0, password)
 
+    def check_pass(password):
         cnt_upper, cnt_lower, cnt_num, cnt_special = strong_pass(password)
 
         mark_strong = 0
         mark_strong = calculation_markStrong(cnt_upper, cnt_lower, cnt_num, cnt_special, len(password))
         # Đánh giá độ mạnh (rất đơn giản)
         if 9 <= mark_strong <= 10:
-            strength_label.config(text="🔐 Very Strong", fg="green4")
+            return "🔐 Very Strong"
         elif 7 <= mark_strong <= 8:
-            strength_label.config(text="✅ Strong", fg="green")
+            return "✅ Strong"
         elif 5 <= mark_strong <= 6:
-            strength_label.config(text="⚠️ Medium", fg="yellow4")
+            return "⚠️ Medium"
         elif 3 <= mark_strong <= 4:
+            return "❌ Weak"
+        else:
+            return "🚫 Very Weak"
+    def update_strong():
+        pwd = password_entry.get()
+        result = check_pass(pwd)
+        if result == "🔐 Very Strong":
+            strength_label.config(text="🔐 Very Strong", fg="green4")
+        elif result == "✅ Strong":
+            strength_label.config(text="✅ Strong", fg="green")
+        elif result == "⚠️ Medium":
+            strength_label.config(text="⚠️ Medium", fg="yellow4")
+        elif result == "❌ Weak":
             strength_label.config(text="❌ Weak", fg="orange")
         else:
             strength_label.config(text="🚫 Very Weak", fg="red")
-
     # Sao chép mật khẩu
     def copy_password():
         password = password_entry.get()
         pyperclip.copy(password)
         messagebox.showinfo("Sao chép", "Đã sao chép mật khẩu vào clipboard.")
 
+    def select_file():
+        path = filedialog.asksaveasfilename(defaultextension=".txt",
+                                            filetypes=[("Text Files", "*.txt")],
+                                            title="Chọn hoặc tạo file lưu trữ")
+        if path:
+            nameF_path.set(path)
+
+    def save_to_file():
+        pwd = password_entry.get()
+        path = nameF_path.get()
+        if path == "Chưa chọn file" or not path.strip():
+            messagebox.showwarning("Chưa chọn file", "Vui lòng chọn file lưu trữ trước.")
+            return
+
+        if not pwd:
+            messagebox.showwarning("Mật khẩu trống", "Không có mật khẩu để lưu.")
+            return
+
+        try:
+            with open(path, "a", encoding="utf-8") as f:
+                f.write(pwd + "\n")
+            messagebox.showinfo("Thành công", "Mật khẩu đã được lưu vào file.")
+        except Exception as e:
+            messagebox.showerror("Lỗi", f"Không thể lưu file:\n{e}")
 
     # Khung chính căn giữa
     main_frame = tk.Frame(main_content)
     # main_frame.pack(expand=True)
     main_frame.grid(row=0, column=0, sticky="nsew")  # dùng grid
     # Bên trong main_frame: tất cả .grid(...)
+    main_frame.grid_rowconfigure(0,weight=1)
+    main_frame.grid_rowconfigure(1,weight=5)
+    main_frame.grid_columnconfigure(0,weight=1)
 
-    # Tiêu đề
-    tk.Label(main_frame, text="Trình tạo mật khẩu ngẫu nhiên", font=("Helvetica", 18, "bold")).pack(pady=(10, 5))
-    tk.Label(main_frame, text="Hãy tạo mật khẩu mạnh và đủ an toàn để bảo vệ tài khoản trên mạng của bạn.", font=("Helvetica", 10)).pack(pady=(0, 15))
+    #LAYOUT lever 1
+    # Tạo frame chứa tiêu đề
+    title_frame = Frame(main_frame)
+    title_frame.grid(row=0, column=0)
+    title_frame.grid_rowconfigure(0,weight=1)
+    title_frame.grid_rowconfigure(1,weight=1)
+    title_frame.grid_columnconfigure(0,weight=1)
+    # Tạo frame chứa thông tin chính
+    main_content_frame = Frame(main_frame, bg="violet", bd=2, relief="solid")
+    main_content_frame.grid(row=1, column=0, sticky="nsew")
+    main_content_frame.grid_rowconfigure(0,weight=1)
+    main_content_frame.grid_columnconfigure(0,weight=1)
 
-    # Ô hiển thị mật khẩu
-    password_frame = tk.Frame(main_frame)
-    password_frame.pack()
+    #LAYOUT lever 2
+    # Tạo label cho tiêu đề
+    tk.Label(title_frame, text="Trình tạo mật khẩu ngẫu nhiên", font=("Arial", 20, "bold")).grid(row=0, column=0,pady=(0, 15))
+    tk.Label(title_frame, text="Hãy tạo mật khẩu mạnh và đủ an toàn để bảo vệ tài khoản trên mạng của bạn.",font=("Arial", 14)).grid(row=1, column=0, pady=(0, 15))
+    # Tạo khung con cho thông tin chính
+    content_frame = Frame(main_content_frame, bg="white")
+    content_frame.grid(row=0, column=0,sticky="nsew",padx=10,pady=10)
+    content_frame.grid_rowconfigure(0,weight=1)
+    content_frame.grid_rowconfigure(1, weight=1)
 
-    password_entry = tk.Entry(password_frame, font=("Helvetica", 14), width=20, justify="center")
-    password_entry.pack(side="left", padx=5)
+    content_frame.grid_columnconfigure(0,weight=1)
 
-    strength_label = tk.Label(password_frame, text="", font=("Helvetica", 10, "bold"))
-    strength_label.pack(side="left")
+    #LAYOUT lever 3
+    # Tao Frame chứa mật khẩu và nút làm mới, kiểm tra
+    detail_frame_1 = Frame(content_frame)
+    detail_frame_1.grid(row=0, column=0,sticky="nsew", pady=5)
+    detail_frame_1.grid_rowconfigure(0,weight=1)
+    detail_frame_1.grid_rowconfigure(1,weight=1)
+    detail_frame_1.grid_columnconfigure(0,weight=1)
+    detail_frame_1.grid_columnconfigure(1,weight=1)
+    detail_frame_1.grid_columnconfigure(2,weight=1)
 
-    # Nút tạo và sao chép
-    button_frame = tk.Frame(main_frame)
-    button_frame.pack(pady=10)
+    frame_display_pass = Frame(detail_frame_1)
+    frame_display_pass.grid(row = 0, column = 0, sticky = "nsew")
+    for i in range(3):
+        frame_display_pass.grid_rowconfigure(i,weight=1)
+        frame_display_pass.grid_columnconfigure(i,weight=1)
+    password_entry = tk.Entry(frame_display_pass, font=("Arial", 14), justify="center")
+    password_entry.grid(row=1, column=1, sticky="ew", padx = 5)
 
-    generate_btn = tk.Button(button_frame, text="🔄 Tạo mới", command=generate_password, bg="#f0f0f0")
-    generate_btn.pack(side="left", padx=10)
+    frame_display_strong = Frame(detail_frame_1)
+    frame_display_strong.grid(row=1, column = 0, sticky="nsew")
+    for i in range(3):
+        frame_display_strong.grid_rowconfigure(i,weight=1)
+    for i in range(2):
+        frame_display_strong.grid_columnconfigure(i,weight=1)
+    tk.Label(frame_display_strong, text="Mật khẩu mạnh: ", font=("Arial", 12, "bold")).grid(row=1, column=0,padx=10)
+    strength_label = tk.Label(frame_display_strong, text="Default", font=("Arial", 12, "bold"))
+    strength_label.grid(row=1, column=1,sticky="w")
 
-    copy_btn = tk.Button(button_frame, text="Sao chép", command=copy_password, bg="#008CFF", fg="white")
-    copy_btn.pack(side="left", padx=10)
+    frame_display_renew = Frame(detail_frame_1)
+    frame_display_renew.grid(row=0, column=1, rowspan = 2, sticky="nsew")
+    for i in range(3):
+        frame_display_renew.grid_rowconfigure(i,weight=1)
+        frame_display_renew.grid_columnconfigure(i,weight=1)
+    generate_btn = tk.Button(frame_display_renew, text="Tạo Mới", font=("Arial", 12, "bold"), command=generate_password, bg="lightgreen")
+    generate_btn.grid(row=1,column=1, sticky="nsew", padx = 10, pady=10)
 
-    # Thanh điều chỉnh độ dài
-    tk.Label(main_frame, text="Độ dài mật khẩu:").pack()
-    password_length_text = tk.Text(main_frame, wrap="word", height=1, width=4)
-    password_length_text.pack(pady=(0,10))
+    frame_display_check = Frame(detail_frame_1)
+    frame_display_check.grid(row=0,column=2,rowspan=2, sticky="nsew")
+    for i in range(3):
+        frame_display_check.grid_rowconfigure(i,weight=1)
+        frame_display_check.grid_columnconfigure(i,weight=1)
+    check_btn = tk.Button(frame_display_check, text="Kiểm Tra", font=("Arial", 12, "bold"),command=update_strong, bg="lightyellow")
+    check_btn.grid(row=1,column=1, sticky="nsew", padx = 10, pady=10)
 
-    # password_length_label = tk.Label(main_frame,text=password_length, font=("Helvetica", 10, "bold"))
-    # password_length_label.pack(pady=(0,10))
-    # length_slider = ttk.Scale(main_frame, from_=1, to=30, variable=password_length, orient="horizontal")
-    # length_slider.pack(pady=(0, 10))
 
-    # Checkbox chọn ký tự
-    tk.Label(main_frame, text="Ký tự được sử dụng:", font=("Helvetica", 10)).pack()
+    # Tạo Frame chứa độ dài và options và nút Lưu và Sao chép
+    detail_frame_2 = Frame(content_frame)
+    detail_frame_2.grid(row=1, column=0, sticky="nsew", pady=5)
+    for i in range(5):
+        detail_frame_2.grid_rowconfigure(i, weight=1)
+    detail_frame_2.grid_columnconfigure(0, weight=1)
+    detail_frame_2.grid_columnconfigure(1, weight=1)
 
-    option_frame = tk.Frame(main_frame)
-    option_frame.pack()
+    frame_display_pwdlength = Frame(detail_frame_2)
+    frame_display_pwdlength.grid(row=0,column=0,sticky="nsew")
+    tk.Label(frame_display_pwdlength, text="Độ dài mật khẩu:", font=("Arial", 12, "bold")).pack(fill="both",side="left", padx=10)
+    password_length_text = tk.Text(frame_display_pwdlength, wrap="word",font=("Arial", 12, "bold"), height=0.5, width=4)
+    password_length_text.pack(fill="x",side="left",padx=10)
 
     use_upper = tk.BooleanVar(value=True)
     use_lower = tk.BooleanVar(value=True)
     use_digits = tk.BooleanVar(value=True)
     use_symbols = tk.BooleanVar(value=False)
+    frame_display_optionUpper = Frame(detail_frame_2)
+    frame_display_optionUpper.grid(row=1,column=0,sticky="nsew")
+    tk.Checkbutton(frame_display_optionUpper, text="Sử dụng chữ hoa (A-Z)", font=("Arial", 12, "bold"), variable=use_upper).pack(fill="both",side="left", padx=10)
 
-    tk.Checkbutton(option_frame, text="ABC", variable=use_upper).pack(side="left", padx=10)
-    tk.Checkbutton(option_frame, text="abc", variable=use_lower).pack(side="left", padx=10)
-    tk.Checkbutton(option_frame, text="123", variable=use_digits).pack(side="left", padx=10)
-    tk.Checkbutton(option_frame, text="#$&", variable=use_symbols).pack(side="left", padx=10)
+    frame_display_optionLower = Frame(detail_frame_2)
+    frame_display_optionLower.grid(row=2,column=0,sticky="nsew")
+    tk.Checkbutton(frame_display_optionLower, text="Sử dụng chữ thường (a-z)", font=("Arial", 12, "bold"), variable=use_lower).pack(fill="both",side="left", padx=10)
+
+    frame_display_optionNum = Frame(detail_frame_2)
+    frame_display_optionNum.grid(row=3,column=0,sticky="nsew")
+    tk.Checkbutton(frame_display_optionNum, text="Sử dụng chữ số (0-9)", font=("Arial", 12, "bold"), variable=use_digits).pack(fill="both",side="left", padx=10)
+
+    frame_display_optionSpecial = Frame(detail_frame_2)
+    frame_display_optionSpecial.grid(row=4,column=0,sticky="nsew")
+    tk.Checkbutton(frame_display_optionSpecial, text="Sử dụng ký hiêu đặc biệt (@#$...)", font=("Arial", 12, "bold"), variable=use_symbols).pack(fill="both",side="left", padx=10)
+
+    frame_display_nameFile = Frame(detail_frame_2)
+    frame_display_nameFile.grid(row=0,column=1,sticky="nsew")
+    frame_display_nameFile.grid_rowconfigure(0,weight=1)
+    for i in range(3):
+        frame_display_nameFile.grid_columnconfigure(i,weight=1)
+    nameF_path = tk.StringVar(value="Chưa chọn file")
+    nameF = tk.Label(frame_display_nameFile, textvariable=nameF_path, font=("Arial", 20, "bold"))
+    nameF.grid(row=0, column=1, sticky="nsew", padx=10)
+
+    frame_display_inputFile = Frame(detail_frame_2)
+    frame_display_inputFile.grid(row=1,column=1,sticky="nsew")
+    frame_display_inputFile.grid_rowconfigure(0,weight=1)
+    for i in range(3):
+        frame_display_inputFile.grid_columnconfigure(i,weight=1)
+    inputF_btn = tk.Button(frame_display_inputFile, text="Nhập file lưu trữ", font=("Arial", 12, "bold"), command=select_file)
+    inputF_btn.grid(row=0,column=1, sticky="nsew", padx=10)
+
+    frame_display_saveFile = Frame(detail_frame_2)
+    frame_display_saveFile.grid(row=3,column=1,sticky="nsew")
+    frame_display_saveFile.grid_rowconfigure(0,weight=1)
+    for i in range(3):
+        frame_display_saveFile.grid_columnconfigure(i,weight=1)
+    saveF_btn = tk.Button(frame_display_saveFile, text="Lưu vào file", font=("Arial", 12, "bold"), bg="white", command=save_to_file)
+    saveF_btn.grid(row=0, column=1, sticky="nsew", padx=10)
+
+    frame_display_copy = Frame(detail_frame_2)
+    frame_display_copy.grid(row=4,column=1,sticky="nsew")
+    frame_display_copy.grid_rowconfigure(0, weight=1)
+    for i in range(3):
+        frame_display_copy.grid_columnconfigure(i, weight=1)
+    copy_btn = tk.Button(frame_display_copy, text="Sao chép", font=("Arial", 12, "bold"), bg="lightgreen", command=copy_password)
+    copy_btn.grid(row=0, column=1, sticky="nsew", padx=10)
+
 
     frames["matkhau"] = main_frame
