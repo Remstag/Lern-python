@@ -8,7 +8,7 @@ from Graphic.BlowFish import BlowFish_Decode, BlowFish_Encode
 from AES import AES_Encode, AES_Decode
 from TripleDES import TripleDES_Encode, TripleDES_Decode
 from Graphic.XoaFile import xoafiledod, xoafilegutmann
-from Graphic.KiemTraTinhToanVen import checktv, taomabam
+from KiemTraTinhToanVen import checktv, taomabam
 from MatKhauManh import TaoMatKhau
 frames = {}
 def show_frame(page):

@@ -4,7 +4,8 @@ import random
 import os
 import string
 import secrets
-from Graphic.KiemTraTinhToanVen import kiemtratinhtoanven as cheeck
+# from Graphic.KiemTraTinhToanVen import kiemtratinhtoanven as cheeck
+from Bannop.Graphic.KiemTraTinhToanVen import kiemtratinhtoanven
 frames={}
 def kiemtrafile(main_content):
     frame = Frame(main_content)
@@ -22,8 +23,8 @@ def kiemtrafile(main_content):
         file_path1 = file_path1.replace("/", "\\\\")
         file_path2 = inputt2.get("1.0", "end").strip()
         file_path2 = file_path2.replace("/", "\\\\")
-        hash_goc=cheeck.shaa256(file_path1)
-        hash_cancheck=cheeck.shaa256(file_path2)
+        hash_goc=kiemtratinhtoanven.shaa256(file_path1)
+        hash_cancheck=kiemtratinhtoanven.shaa256(file_path2)
         if(hash_goc and hash_cancheck):
             if hash_goc == hash_cancheck:
                 outputt.delete("1.0", "end")
@@ -41,8 +42,8 @@ def kiemtrafile(main_content):
         file_path1 = file_path1.replace("/", "\\\\")
         file_path2 = inputt2.get("1.0", "end").strip()
         file_path2 = file_path2.replace("/", "\\\\")
-        hash_goc = cheeck.travevb(file_path1)
-        hash_cancheck = cheeck.shaa256(file_path2)
+        hash_goc = kiemtratinhtoanven.travevb(file_path1)
+        hash_cancheck = kiemtratinhtoanven.shaa256(file_path2)
         if (hash_goc and hash_cancheck):
             if hash_goc == hash_cancheck:
                 outputt.delete("1.0", "end")

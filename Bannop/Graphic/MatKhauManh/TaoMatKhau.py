@@ -6,6 +6,8 @@ import pyperclip
 
 frames={}
 def taomatkhau(main_content):
+
+    # Tính chỉ số của password dùng để xét độ mạnh yếu
     def strong_pass(password):
         cnt_upper, cnt_lower, cnt_num, cnt_special = 0,0,0,0
         for i in password:
@@ -16,7 +18,7 @@ def taomatkhau(main_content):
                 cnt_special += 1
         return cnt_upper, cnt_lower, cnt_num, cnt_special
 
-
+    # Tính điểm độ mạnh của Password
     def calculation_markStrong(cnt_upper, cnt_lower, cnt_num, cnt_special, length):
         mark = 0
         if 8 <= length <= 11: mark += 1
@@ -30,11 +32,12 @@ def taomatkhau(main_content):
         if cnt_num >= 3:mark += 2
         if cnt_special >= 2:mark += 2
         return mark
+
     # Hàm tạo mật khẩu
     def generate_password():
         try:
-            password_length_1 = int(password_length_text.get("1.0", "end").strip())
-            password_length = tk.IntVar(value=password_length_1)
+            password_length_default = int(password_length_text.get("1.0", "end").strip())
+            password_length = tk.IntVar(value=password_length_default)
         except:
             password_length = tk.IntVar(value=0)
 
