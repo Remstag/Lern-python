@@ -1,4 +1,7 @@
 giatricu = ""
-def update_a(value):
-    global giatricu
-    giatricu = value
+x=""
+emailhientai=""
+passhientai=""
+keyhientai=""
+uid=""
+duongdanfile=""

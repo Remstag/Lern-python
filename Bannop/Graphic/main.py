@@ -9,15 +9,21 @@ from AES import AES_Encode, AES_Decode
 from TripleDES import TripleDES_Encode, TripleDES_Decode
 from XoaFile import xoafiledod, xoafilegutmann
 from KiemTraTinhToanVen import checktv, taomabam
-from MatKhauManh import TaoMatKhau
+from MatKhauManh import TaoMatKhau, thongbao
 from DangNhap import dangnhap
+import giatricuu
 import Database
-
+from Graphic import giatricuu
 Database.init_db()
 frames = {}
 def show_frame(page):
     frame = frames[page]
     frame.tkraise()  # Đưa frame lên trên
+def show_framedb(page):
+    TaoMatKhau.taomatkhau(main_content)
+    frames.update(TaoMatKhau.frames)
+    frame = frames[page]
+    frame.tkraise()
 def update_header(text):
     header_label.config(text=text)
 root = tk.Tk()
@@ -102,8 +108,8 @@ frames.update(checktv.frames)
 taomabam.xoafil(main_content)
 frames.update(taomabam.frames)
 
-TaoMatKhau.taomatkhau(main_content)
-frames.update(TaoMatKhau.frames)
+
+
 
 dangnhap.dangnhap(main_content)
 frames.update(dangnhap.frames)
@@ -145,8 +151,10 @@ b9 = Button(butframe, text="Kiểm tra tính toàn vẹn", font=("Arial",13),com
 b9.grid(row=9, column=1, padx=10, pady=5,sticky="ew")
 
 #Tao - Ma hoa - Luu tru mat khau manh
-b10 = Button(butframe, text="Mật khẩu", font=("Arial",13),command=lambda: [update_header("Mật khẩu"),show_frame("matkhau")])
+
+b10 = Button(butframe, text="Mật khẩu", font=("Arial",13),command=lambda: [update_header("Mật khẩu"),show_framedb("matkhau")])
 b10.grid(row=10, column=1, padx=10, pady=5,sticky="ew")
+
 
 b11 = Button(butframe, text="Tạo file mã băm", font=("Arial",13),command=lambda: [update_header("Mã băm"),show_frame("taombb")])
 b11.grid(row=11, column=1, padx=10, pady=5,sticky="ew")
