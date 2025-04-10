@@ -4,12 +4,16 @@ from PIL import Image, ImageTk, ImageFilter
 
 
 #cac bien toan cuc
-from Graphic.BlowFish import BlowFish_Decode, BlowFish_Encode
+from BlowFish import BlowFish_Decode, BlowFish_Encode
 from AES import AES_Encode, AES_Decode
 from TripleDES import TripleDES_Encode, TripleDES_Decode
-from Graphic.XoaFile import xoafiledod, xoafilegutmann
+from XoaFile import xoafiledod, xoafilegutmann
 from KiemTraTinhToanVen import checktv, taomabam
 from MatKhauManh import TaoMatKhau
+from DangNhap import dangnhap
+import Database
+
+Database.init_db()
 frames = {}
 def show_frame(page):
     frame = frames[page]
@@ -38,7 +42,7 @@ root.grid_columnconfigure(0, weight=1)
 root.grid_columnconfigure(1, weight=9)
 
 # Home
-home = Frame(root, bg="lightgray", padx=5, pady=10,bd=1,relief="solid")
+home = Frame(root, bg="red4", padx=5, pady=10,bd=1,relief="solid")
 home.grid(row=0, column=0, sticky="nsew")
 but_home = Button(home, text="Home", font=("Arial", 14),background="lightgray",command=lambda: [update_header("Home"),show_frame("home")]).pack()
 
@@ -101,8 +105,14 @@ frames.update(taomabam.frames)
 TaoMatKhau.taomatkhau(main_content)
 frames.update(TaoMatKhau.frames)
 
+dangnhap.dangnhap(main_content)
+frames.update(dangnhap.frames)
+
 spacer = Label(butframe, text=" ", bg="lightblue")
 spacer.grid(row=0, column=1, padx=10, pady=5, sticky="ew")
+
+
+
 
 #Ma hoa - giai ma AES
 b1 = Button(butframe, text="Mã hóa AES", font=("Arial",13),command=lambda: [update_header("Mã hóa AES"),show_frame("mhvbaes")])
@@ -141,12 +151,12 @@ b10.grid(row=10, column=1, padx=10, pady=5,sticky="ew")
 b11 = Button(butframe, text="Tạo file mã băm", font=("Arial",13),command=lambda: [update_header("Mã băm"),show_frame("taombb")])
 b11.grid(row=11, column=1, padx=10, pady=5,sticky="ew")
 
+dangnhap_btn = Button(butframe, text="Đăng Nhập", font=("Arial",13),command=lambda: [update_header("Đăng Nhập"),show_frame("dangnhap")])
+dangnhap_btn.grid(row=12,column = 1, padx=10, pady=5,sticky="ew")
+dangky_btn = Button(butframe, text="Đăng Ký", font=("Arial",13),command=lambda: [update_header("Đăng ký"),show_frame("dangky")])
+dangky_btn.grid(row=13, column=1, padx=10, pady=5,sticky="ew")
 
 
-spacer = Label(butframe, text=" ", bg="lightblue")
-spacer.grid(row=12, column=1, padx=10, pady=5, sticky="ew")
-spacer = Label(butframe, text=" ", bg="lightblue")
-spacer.grid(row=13, column=1, padx=10, pady=5, sticky="ew")
 spacer = Label(butframe, text=" ", bg="lightblue")
 spacer.grid(row=14, column=1, padx=10, pady=5, sticky="ew")
 spacer = Label(butframe, text=" ", bg="lightblue")
