@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import Label, Frame, Button
+from tkinter import Label, Frame, Button, messagebox
 from PIL import Image, ImageTk, ImageFilter
 
 
@@ -17,15 +17,31 @@ from Graphic import giatricuu
 Database.init_db()
 frames = {}
 def show_frame(page):
+    global lbuser
+    if(giatricuu.x==1): lbuser.config(text=giatricuu.emailhientai)
     frame = frames[page]
     frame.tkraise()  # Đưa frame lên trên
 def show_framedb(page):
+    global lbuser
+    if (giatricuu.x == 1): lbuser.config(text=giatricuu.emailhientai)
     TaoMatKhau.taomatkhau(main_content)
     frames.update(TaoMatKhau.frames)
     frame = frames[page]
     frame.tkraise()
 def update_header(text):
     header_label.config(text=text)
+def dangxuat():
+    if(giatricuu.mahoa==0):
+        TaoMatKhau.encrypt_user_folder()
+    giatricuu.x=0
+    lbuser.config(text="")
+    giatricuu.emailhientai = ""
+    giatricuu.passhientai = ""
+    giatricuu.keyhientai = ""
+    giatricuu.uid = ""
+    giatricuu.duongdanfile = ""
+    messagebox.showinfo("Thành công", "Đăng xuất thành công!")
+
 root = tk.Tk()
 root.title("PYTHON CRYPTION")
 
@@ -62,7 +78,11 @@ header_label.pack(expand=True)
 user = Frame(header, bg="lightgray", bd=1,relief="solid")
 # user.pack(side="right", padx=5, pady=2)
 user.place(relx=0.8, rely=0, relwidth=0.2, relheight=1.0)  # Vị trí góc phải trên
-Label(user, text="BTL Python", font=("Arial", 14)).pack(expand=True,fill="both")
+
+lbuser = Label(user, text="", font=("Arial", 14))
+lbuser.pack(expand=True)
+
+
 Label(user, text="Nhóm 12", font=("Arial", 14)).pack(expand=True,fill="both")
 
 # Main image (lock)
@@ -161,7 +181,7 @@ b11.grid(row=11, column=1, padx=10, pady=5,sticky="ew")
 
 dangnhap_btn = Button(butframe, text="Đăng Nhập", font=("Arial",13),command=lambda: [update_header("Đăng Nhập"),show_frame("dangnhap")])
 dangnhap_btn.grid(row=12,column = 1, padx=10, pady=5,sticky="ew")
-dangky_btn = Button(butframe, text="Đăng Ký", font=("Arial",13),command=lambda: [update_header("Đăng ký"),show_frame("dangky")])
+dangky_btn = Button(butframe, text="Đăng xuất", font=("Arial",13),command=dangxuat)
 dangky_btn.grid(row=13, column=1, padx=10, pady=5,sticky="ew")
 
 
