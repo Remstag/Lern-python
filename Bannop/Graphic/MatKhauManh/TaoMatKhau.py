@@ -11,6 +11,57 @@ from cryptography.fernet import Fernet
 from Graphic import giatricuu
 frames={}
 
+
+def encrypt_file(path, fernet):
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+        encrypted = fernet.encrypt(data)
+        with open(path, "wb") as f:
+            f.write(encrypted)
+    except Exception as e:
+        print(f"Không thể mã hóa {path}: {e}")
+
+
+def encrypt_user_folder():
+    giatricuu.mahoa=1
+    user_dir = giatricuu.duongdanfile
+    key = giatricuu.keyhientai
+    try:
+        if not key:
+            return
+        fernet = Fernet(key)
+        for filename in os.listdir(user_dir):
+            full_path = os.path.join(user_dir, filename)
+            if os.path.isfile(full_path):
+                encrypt_file(full_path, fernet)
+        messagebox.showinfo("Thành công", "Mã hóa thư mục thành công!")
+    except Exception as e:
+        messagebox.showerror("Lỗi", f"Không thể mã hóa: {e}")
+
+
+def decrypt_file(path, fernet):
+    try:
+        with open(path, "rb") as f:
+            data = f.read()
+        decrypted = fernet.decrypt(data)
+        with open(path, "wb") as f:
+            f.write(decrypted)
+    except Exception as e:
+        print(f"Không thể giải mã {path}: {e}")
+
+
+def decrypt_user_folder():
+    giatricuu.mahoa=0
+    user_dir = giatricuu.duongdanfile
+    key = giatricuu.keyhientai
+    if not key: return
+    fernet = Fernet(key)
+
+    for filename in os.listdir(user_dir):
+        full_path = os.path.join(user_dir, filename)
+        if os.path.isfile(full_path):
+            decrypt_file(full_path, fernet)
 def taomatkhau(main_content):
     main_frame = tk.Frame(main_content)
     if(giatricuu.x==1):
@@ -106,16 +157,76 @@ def taomatkhau(main_content):
 
         from tkinter import filedialog
 
+        from tkinter.simpledialog import askstring
+
         def select_file():
-            path = filedialog.asksaveasfilename(
-                defaultextension=".txt",
-                filetypes=[("Text Files", "*.txt")],
-                title="Chọn file có sẵn hoặc tạo file mới",
-                initialdir=giatricuu.duongdanfile,  # thư mục khởi đầu
-                initialfile="ten_file_moi.txt"  # tùy chọn: tên gợi ý nếu tạo file mới
-            )
-            if path:
-                nameF_path.set(path)
+            if not giatricuu.emailhientai:
+                messagebox.showwarning("Lỗi", "Chưa đăng nhập.")
+                return
+
+            # ✅ Nhập key giải mã
+            if(giatricuu.mahoa==1):
+                key = askstring("Nhập khóa", "Nhập khóa giải mã thư mục:")
+                if not key:
+                    messagebox.showwarning("Lỗi", "Bạn chưa nhập khóa.")
+                    return
+                # Gán key vào biến toàn cục để hàm giải mã khác dùng
+
+                if isinstance(giatricuu.keyhientai, bytes):
+                    giatricuu.keyhientai = giatricuu.keyhientai.decode()
+                if (giatricuu.keyhientai==key):
+                    # Đường dẫn thư mục cá nhân
+                    messagebox.showinfo("Thành công", "Nhập key thành công!")
+                    decrypt_user_folder()
+                    base_path = r"C:\Appne"
+                    user_dir = os.path.join(base_path, giatricuu.emailhientai)
+
+                    if not os.path.exists(user_dir):
+                        messagebox.showerror("Lỗi", "Không tìm thấy thư mục người dùng.")
+                        return
+
+                    # Chỉ cho phép lưu file trong thư mục cá nhân
+                    path = filedialog.asksaveasfilename(
+                        defaultextension=".txt",
+                        filetypes=[("Text Files", "*.txt")],
+                        title="Chọn tên file lưu mật khẩu",
+                        initialdir=user_dir,
+                        initialfile="passwords.txt"
+                    )
+
+                    if path:
+                        abs_user_dir = os.path.abspath(user_dir)
+                        abs_path = os.path.abspath(path)
+                        if not abs_path.startswith(abs_user_dir):
+                            messagebox.showerror("Lỗi", "Bạn chỉ được lưu file trong thư mục cá nhân của mình.")
+                            return
+
+                        nameF_path.set(path)
+            else:
+                base_path = r"C:\Appne"
+                user_dir = os.path.join(base_path, giatricuu.emailhientai)
+
+                if not os.path.exists(user_dir):
+                    messagebox.showerror("Lỗi", "Không tìm thấy thư mục người dùng.")
+                    return
+
+                # Chỉ cho phép lưu file trong thư mục cá nhân
+                path = filedialog.asksaveasfilename(
+                    defaultextension=".txt",
+                    filetypes=[("Text Files", "*.txt")],
+                    title="Chọn tên file lưu mật khẩu",
+                    initialdir=user_dir,
+                    initialfile="passwords.txt"
+                )
+
+                if path:
+                    abs_user_dir = os.path.abspath(user_dir)
+                    abs_path = os.path.abspath(path)
+                    if not abs_path.startswith(abs_user_dir):
+                        messagebox.showerror("Lỗi", "Bạn chỉ được lưu file trong thư mục cá nhân của mình.")
+                        return
+
+                    nameF_path.set(path)
 
         def save_to_file():
             pwd = password_entry.get()
@@ -134,6 +245,24 @@ def taomatkhau(main_content):
                 messagebox.showinfo("Thành công", "Mật khẩu đã được lưu vào file.")
             except Exception as e:
                 messagebox.showerror("Lỗi", f"Không thể lưu file:\n{e}")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         # Khung chính căn giữa
 
@@ -272,6 +401,9 @@ def taomatkhau(main_content):
             frame_display_saveFile.grid_columnconfigure(i,weight=1)
         saveF_btn = tk.Button(frame_display_saveFile, text="Lưu vào file", font=("Arial", 12, "bold"), bg="white", command=save_to_file)
         saveF_btn.grid(row=0, column=1, sticky="nsew", padx=10)
+
+        saveF_btn = tk.Button(frame_display_saveFile, text="Mã hóa thư mục", font=("Arial", 12, "bold"), bg="white",command= encrypt_user_folder )
+        saveF_btn.grid(row=1, column=1, sticky="nsew", padx=10)
 
         frame_display_copy = Frame(detail_frame_2)
         frame_display_copy.grid(row=4,column=1,sticky="nsew")
