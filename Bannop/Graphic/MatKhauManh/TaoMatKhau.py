@@ -413,9 +413,8 @@ def taomatkhau(main_content):
         copy_btn = tk.Button(frame_display_copy, text="Sao chép", font=("Arial", 12, "bold"), bg="lightgreen", command=copy_password)
         copy_btn.grid(row=0, column=1, sticky="nsew", padx=10)
     else:
-
         main_frame.grid(row=0, column=0, sticky="nsew")
         label = tk.Label(main_frame, text="Vui lòng đăng nhập để sử dụng chức năng này", font=("Arial", 20))
-        label.grid(row=1, column=1, sticky="w")
+        label.grid(row=3, column=3, sticky="w")
 
     frames["matkhau"] = main_frame
