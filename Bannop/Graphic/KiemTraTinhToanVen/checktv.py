@@ -1,11 +1,12 @@
 from tkinter import *
-from tkinter import  Button, filedialog
+from tkinter import  Button, filedialog, messagebox
 import random
 import os
 import string
 import secrets
 # from Graphic.KiemTraTinhToanVen import kiemtratinhtoanven as cheeck
-from Bannop.Graphic.KiemTraTinhToanVen import kiemtratinhtoanven
+from Graphic.KiemTraTinhToanVen import kiemtratinhtoanven
+from Graphic import giatricuu
 frames={}
 def kiemtrafile(main_content):
     frame = Frame(main_content)
@@ -16,8 +17,27 @@ def kiemtrafile(main_content):
     def getfile(i):
         file_path = filedialog.askopenfilename(title="Chọn file")
         if file_path:
-            i.delete("1.0", "end")
-            i.insert("end", file_path)
+            appne_dir = os.path.abspath("C:/Appne")
+            selected_path = os.path.abspath(file_path)
+
+            # Kiểm tra nếu người dùng chưa đăng nhập và đang cố mở file trong C:/Appne
+            if selected_path.startswith(appne_dir) and not giatricuu.emailhientai:
+                messagebox.showerror("Truy cập bị từ chối",
+                                     "Bạn không được phép truy cập mục này, vui lòng đăng nhập")
+                return
+            else:
+                # Nếu đã đăng nhập thì chỉ được phép vào đúng thư mục cá nhân
+                user_dir = os.path.join(appne_dir, giatricuu.emailhientai)
+                abs_user_dir = os.path.abspath(user_dir)
+                if selected_path.startswith(appne_dir) and not selected_path.startswith(abs_user_dir):
+                    messagebox.showerror("Truy cập bị từ chối", "Bạn chỉ được phép truy cập thư mục cá nhân của mình.")
+                    return
+
+            try:
+                i.delete("1.0", "end")
+                i.insert("end", file_path)
+            except Exception as e:
+                messagebox.showerror("Lỗi đọc file", f"Không thể đọc file:\n{str(e)}")
     def checktv():
         file_path1 = inputt1.get("1.0", "end").strip()
         file_path1 = file_path1.replace("/", "\\\\")
