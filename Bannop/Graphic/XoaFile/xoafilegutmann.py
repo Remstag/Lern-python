@@ -1,6 +1,7 @@
 from tkinter import *
-from tkinter import Button, filedialog
+from tkinter import Button, filedialog, messagebox
 import os
+from Graphic import giatricuu
 from Graphic.XoaFile import gutmann  # Import module xóa file Gutmann
 
 frames = {}
@@ -13,10 +14,28 @@ def xoafilegutmann(main_content):
     frame.grid_columnconfigure(0, weight=1)
 
     def layfile():
-        file_path = filedialog.askopenfilename(title="Chọn file cần xóa")
+        file_path = filedialog.askopenfilename(title="Chọn file tạo mã băm")
         if file_path:
-            inentry.delete("1.0", "end")
-            inentry.insert("end", file_path)
+            appne_dir = os.path.abspath("C:/Appne")
+            selected_path = os.path.abspath(file_path)
+
+            # Kiểm tra nếu người dùng chưa đăng nhập và đang cố mở file trong C:/Appne
+            if selected_path.startswith(appne_dir) and not giatricuu.emailhientai:
+                messagebox.showerror("Truy cập bị từ chối",
+                                     "Bạn không được phép truy cập mục này, vui lòng đăng nhập")
+                return
+            else:
+                # Nếu đã đăng nhập thì chỉ được phép vào đúng thư mục cá nhân
+                user_dir = os.path.join(appne_dir, giatricuu.emailhientai)
+                abs_user_dir = os.path.abspath(user_dir)
+                if selected_path.startswith(appne_dir) and not selected_path.startswith(abs_user_dir):
+                    messagebox.showerror("Truy cập bị từ chối", "Bạn chỉ được phép truy cập thư mục cá nhân của mình.")
+                    return
+            try:
+                inentry.delete("1.0", "end")
+                inentry.insert("end", file_path)
+            except Exception as e:
+                messagebox.showerror("Lỗi đọc file", f"Không thể đọc file:\n{str(e)}")
 
     def xoa():
         file_path = inentry.get("1.0", "end").strip()
