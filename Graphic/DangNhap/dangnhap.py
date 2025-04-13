@@ -11,6 +11,34 @@ from Graphic.Database import get_db_connection
 giatricuu.x=0
 frames={}
 def dangnhap(main_content):
+    def show_key_popup(keyy):
+        popup = Toplevel()
+        popup.title("Key của bạn")
+        width = 500
+        height = 120
+
+        # Lấy kích thước màn hình
+        screen_width = popup.winfo_screenwidth()
+        screen_height = popup.winfo_screenheight()
+
+        # Tính vị trí để căn giữa
+        x = (screen_width // 2) - (width // 2)
+        y = (screen_height // 2) - (height // 2)
+
+        popup.geometry(f"{width}x{height}+{x}+{y}")
+
+        Label(popup, text="Key của bạn là:").pack(pady=(10, 0))
+
+        entry = Entry(popup, width=60)
+        entry.insert(0, keyy.decode())
+        entry.config(state='readonly')
+        entry.pack(padx=10, pady=10)
+
+        def copy_to_clipboard():
+            popup.clipboard_clear()
+            popup.clipboard_append(keyy.decode())
+
+        Button(popup, text="Copy", command=copy_to_clipboard).pack(pady=(0, 10))
     def dangky():
         email = entry_email.get("1.0", "end-1c").strip()
         password = entry_pass.get("1.0", "end-1c").strip()
@@ -53,6 +81,7 @@ def dangnhap(main_content):
             conn.close()
 
             messagebox.showinfo("Thành công", "Đăng ký thành công!")
+            show_key_popup(keyy)
 
         except Exception as e:
             messagebox.showerror("Lỗi", f"Không thể đăng ký: {e}")
