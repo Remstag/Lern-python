@@ -1,6 +1,7 @@
 from tkinter import *
-from tkinter import  Button, filedialog
+from tkinter import  Button, filedialog, messagebox
 from Graphic.BlowFish import BlowFish_Algorithm
+import os
 import random
 import string
 from Graphic import giatricuu
@@ -46,14 +47,15 @@ def mahoavbbf(main_content):
 
     def setkey():
         entry_key.delete("1.0", "end")
-        random_key = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+        a=random.randint(4, 56)
+        random_key = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=a))
         entry_key.insert("end", random_key)
         entry_key.tag_add("custom_font", "1.0", "end")
         entry_key.tag_configure("custom_font", font=("Arial", 13))
 
     def setiv():
         entry_iv.delete("1.0", "end")
-        random_iv = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
+        random_iv = ''.join(random.choices(string.ascii_letters + string.digits +string.punctuation, k=8))
         entry_iv.insert("end", random_iv)
         entry_iv.tag_add("custom_font", "1.0", "end")
         entry_iv.tag_configure("custom_font", font=("Arial", 13))
@@ -61,18 +63,61 @@ def mahoavbbf(main_content):
     def mhfile():
         file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
         if file_path:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = f.read()
-            entry.delete("1.0", "end")
-            entry.insert("end", data)
+            appne_dir = os.path.abspath("C:/Appne")
+            selected_path = os.path.abspath(file_path)
+
+            # Kiểm tra nếu người dùng chưa đăng nhập và đang cố mở file trong C:/Appne
+            if selected_path.startswith(appne_dir) and not giatricuu.emailhientai:
+                messagebox.showerror("Truy cập bị từ chối",
+                                     "Bạn không được phép truy cập mục này, vui lòng đăng nhập")
+                return
+            else:
+                # Nếu đã đăng nhập thì chỉ được phép vào đúng thư mục cá nhân
+                user_dir = os.path.join(appne_dir, giatricuu.emailhientai)
+                abs_user_dir = os.path.abspath(user_dir)
+                if selected_path.startswith(appne_dir) and not selected_path.startswith(abs_user_dir):
+                    messagebox.showerror("Truy cập bị từ chối", "Bạn chỉ được phép truy cập thư mục cá nhân của mình.")
+                    return
+
+            try:
+                with open(selected_path, "r", encoding="utf-8") as f:
+                    data = f.read()
+                entry.delete("1.0", "end")
+                entry.insert("end", data)
+            except Exception as e:
+                messagebox.showerror("Lỗi đọc file", f"Không thể đọc file:\n{str(e)}")
 
     def savefile():
-        file_path = filedialog.asksaveasfilename(defaultextension="txt",
-                                                 filetypes=[("Text", "*txt"),
-                                                            ("All file", "*.*")])
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("Text", "*.txt"), ("All files", "*.*")],
+            title="Chọn nơi lưu file"
+        )
+
         if file_path:
-            with open(file_path, "w", encoding="utf-8") as file:
-                file.write(output.get("1.0", "end"))
+            selected_path = os.path.abspath(file_path)
+            appne_base = os.path.abspath("C:/Appne")
+
+            # Nếu chưa đăng nhập: không cho lưu vào C:/Appne
+            if not giatricuu.emailhientai:
+                if selected_path.startswith(appne_base):
+                    messagebox.showerror("Lỗi", "Bạn không được quyền truy cập vào mục này.")
+                    return
+
+            else:
+                # Nếu đã đăng nhập: chỉ được lưu trong thư mục cá nhân
+                user_dir = os.path.join(appne_base, giatricuu.emailhientai)
+                abs_user_dir = os.path.abspath(user_dir)
+                if selected_path.startswith(appne_base) and not selected_path.startswith(abs_user_dir):
+                    messagebox.showerror("Lỗi", "Bạn chỉ được lưu file trong thư mục cá nhân của mình.")
+                    return
+
+            try:
+                with open(selected_path, "w", encoding="utf-8") as file:
+                    file.write(output.get("1.0", "end"))
+                messagebox.showinfo("Thành công", "Lưu file thành công!")
+            except Exception as e:
+                messagebox.showerror("Lỗi khi lưu file", f"Không thể lưu file:\n{str(e)}")
 
     #Frame include nhapkey, nhapiv: label, text, button
     nhapkeyiv_frame = Frame(frame,padx=2,pady=10,bd=1,relief="solid")

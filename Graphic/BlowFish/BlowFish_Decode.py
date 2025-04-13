@@ -1,6 +1,7 @@
 from tkinter import *
-from tkinter import  Button, filedialog
+from tkinter import  Button, filedialog,messagebox
 from Graphic.BlowFish import BlowFish_Algorithm
+import os
 from Graphic import giatricuu
 frames={}
 def giaimavbbf(main_content):
@@ -16,13 +17,32 @@ def giaimavbbf(main_content):
 
     def tamluu():
         giatricuu.giatricu = output.get("1.0", "end")
+
     def gmfile():
-        file_path = filedialog.askopenfilename(title="Chọn file để giải mã")
+        file_path = filedialog.askopenfilename(title="Chọn file")
         if file_path:
-            with open(file_path, "r", encoding="utf-8") as f:
-                data = f.read()
-            entry.delete("1.0", "end")
-            entry.insert("end", data)
+            appne_dir = os.path.abspath("C:/Appne")
+            selected_path = os.path.abspath(file_path)
+
+            # Kiểm tra nếu người dùng chưa đăng nhập và đang cố mở file trong C:/Appne
+            if selected_path.startswith(appne_dir) and not giatricuu.emailhientai:
+                messagebox.showerror("Truy cập bị từ chối",
+                                     "Bạn không được phép truy cập mục này, vui lòng đăng nhập")
+                return
+            else:
+                # Nếu đã đăng nhập thì chỉ được phép vào đúng thư mục cá nhân
+                user_dir = os.path.join(appne_dir, giatricuu.emailhientai)
+                abs_user_dir = os.path.abspath(user_dir)
+                if selected_path.startswith(appne_dir) and not selected_path.startswith(abs_user_dir):
+                    messagebox.showerror("Truy cập bị từ chối", "Bạn chỉ được phép truy cập thư mục cá nhân của mình.")
+                    return
+            try:
+                with open(selected_path, "r", encoding="utf-8") as f:
+                    data = f.read()
+                entry.delete("1.0", "end")
+                entry.insert("end", data)
+            except Exception as e:
+                messagebox.showerror("Lỗi đọc file", f"Không thể đọc file:\n{str(e)}")
 
     def sett():
         entry.delete("1.0", "end")
@@ -50,12 +70,36 @@ def giaimavbbf(main_content):
                 output.insert("end", "Lỗi")
 
     def savefile():
-        file_path = filedialog.asksaveasfilename(defaultextension="txt",
-                                                 filetypes=[("Text", "*txt"),
-                                                            ("All file", "*.*")])
+        file_path = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("Text", "*.txt"), ("All files", "*.*")],
+            title="Chọn nơi lưu file"
+        )
+
         if file_path:
-            with open(file_path, "w", encoding="utf-8") as file:
-                file.write(output.get("1.0", "end"))
+            selected_path = os.path.abspath(file_path)
+            appne_base = os.path.abspath("C:/Appne")
+
+            # Nếu chưa đăng nhập: không cho lưu vào C:/Appne
+            if not giatricuu.emailhientai:
+                if selected_path.startswith(appne_base):
+                    messagebox.showerror("Lỗi", "Bạn không được quyền truy cập vào mục này.")
+                    return
+
+            else:
+                # Nếu đã đăng nhập: chỉ được lưu trong thư mục cá nhân
+                user_dir = os.path.join(appne_base, giatricuu.emailhientai)
+                abs_user_dir = os.path.abspath(user_dir)
+                if selected_path.startswith(appne_base) and not selected_path.startswith(abs_user_dir):
+                    messagebox.showerror("Lỗi", "Bạn chỉ được lưu file trong thư mục cá nhân của mình.")
+                    return
+
+            try:
+                with open(selected_path, "w", encoding="utf-8") as file:
+                    file.write(output.get("1.0", "end"))
+                messagebox.showinfo("Thành công", "Lưu file thành công!")
+            except Exception as e:
+                messagebox.showerror("Lỗi khi lưu file", f"Không thể lưu file:\n{str(e)}")
 
     # Frame include nhapkey, nhapiv: label, text, button
     nhapkeyiv_frame = Frame(frame, padx=2, pady=10, bd=1, relief="solid")
