@@ -238,13 +238,16 @@ def taomatkhau(main_content):
             if not pwd:
                 messagebox.showwarning("Mật khẩu trống", "Không có mật khẩu để lưu.")
                 return
-
-            try:
-                with open(path, "a", encoding="utf-8") as f:
-                    f.write(pwd + "\n")
-                messagebox.showinfo("Thành công", "Mật khẩu đã được lưu vào file.")
-            except Exception as e:
-                messagebox.showerror("Lỗi", f"Không thể lưu file:\n{e}")
+            if (giatricuu.mahoa == 1):
+                messagebox.showwarning("Lỗi", "Thư mục đang bị mã hóa, vui lòng nhập lại")
+                select_file()
+            else:
+                try:
+                    with open(path, "a", encoding="utf-8") as f:
+                        f.write(pwd + "\n")
+                    messagebox.showinfo("Thành công", "Mật khẩu đã được lưu vào file.")
+                except Exception as e:
+                    messagebox.showerror("Lỗi", f"Không thể lưu file:\n{e}")
 
 
 
