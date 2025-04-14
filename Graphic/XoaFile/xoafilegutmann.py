@@ -42,7 +42,7 @@ def xoafilegutmann(main_content):
         file_path = file_path.replace("/", "\\")
 
         if os.path.exists(file_path):
-            gutmann.gutmann_wipe(file_path)
+            gutmann.xoafile_gutmann(file_path)
             outentry.delete("1.0", "end")
             outentry.insert("end", f"File {file_path} đã được xóa an toàn bằng phương pháp Gutmann!\n")
         else:
