@@ -8,8 +8,16 @@ import string
 import secrets
 from Graphic import giatricuu
 from Graphic.Database import get_db_connection
+import hashlib
 giatricuu.x=0
 frames={}
+import hashlib
+
+def hash_password_sha256(password):
+    # Mã hóa chuỗi thành bytes, sau đó băm
+    hash_object = hashlib.sha256(password.encode())
+    # Trả về chuỗi hex của giá trị băm
+    return hash_object.hexdigest()
 def dangnhap(main_content):
     def show_key_popup(keyy):
         popup = Toplevel()
@@ -60,7 +68,7 @@ def dangnhap(main_content):
 
             # Ở đây dùng email làm username luôn, có thể chỉnh lại nếu bạn có ô username riêng
             cursor.execute("INSERT INTO users (username, password, key) VALUES (?, ?, ?)",
-                           (email, password, keyy))
+                           (email, hash_password_sha256(password), keyy))
             conn.commit()
             idd_user = cursor.lastrowid
 
@@ -100,7 +108,7 @@ def dangnhap(main_content):
         try:
             conn = get_db_connection()
             cursor = conn.cursor()
-            cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (email, password))
+            cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (email, hash_password_sha256(password)))
             user = cursor.fetchone()
             conn.close()
             giatricuu.emailhientai=email
