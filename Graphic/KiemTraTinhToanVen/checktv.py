@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import  Button, filedialog, messagebox
 import random
+from cryptography.fernet import Fernet
+from tkinter import simpledialog
 import os
 import string
 import secrets
@@ -14,6 +16,30 @@ def kiemtrafile(main_content):
     frame.grid_rowconfigure(0, weight=1)
     frame.grid_columnconfigure(0, weight=1)
 
+    def decrypt_file(path, fernet):
+        try:
+            with open(path, "rb") as f:
+                data = f.read()
+            decrypted = fernet.decrypt(data)
+            with open(path, "wb") as f:
+                f.write(decrypted)
+        except Exception as e:
+            print(f"Không thể giải mã {path}: {e}")
+
+    def decrypt_user_folder():
+        if (giatricuu.mahoa == 1):
+            giatricuu.mahoa = 0
+            user_dir = giatricuu.duongdanfile
+            key = giatricuu.keyhientai
+            if not key: return
+            fernet = Fernet(key)
+
+            for filename in os.listdir(user_dir):
+                full_path = os.path.join(user_dir, filename)
+                if os.path.isfile(full_path):
+                    decrypt_file(full_path, fernet)
+        else:
+            messagebox.showerror("Lỗi", "Không thể giải mã")
     def getfile(i):
         file_path = filedialog.askopenfilename(title="Chọn file")
         if file_path:
@@ -32,10 +58,33 @@ def kiemtrafile(main_content):
                 if selected_path.startswith(appne_dir) and not selected_path.startswith(abs_user_dir):
                     messagebox.showerror("Truy cập bị từ chối", "Bạn chỉ được phép truy cập thư mục cá nhân của mình.")
                     return
-
             try:
-                i.delete("1.0", "end")
-                i.insert("end", file_path)
+
+
+                if giatricuu.mahoa == 1:
+                    key = simpledialog.askstring("Nhập key", "File đang được mã hóa. Nhập key để giải mã:")
+                    if not key:
+                        messagebox.showinfo("Hủy thao tác", "Bạn đã hủy việc giải mã.")
+                        return
+                    if isinstance(giatricuu.keyhientai, bytes):
+                        giatricuu.keyhientai = giatricuu.keyhientai.decode()
+                    if (giatricuu.keyhientai == key):
+                        # Đường dẫn thư mục cá nhân
+                        messagebox.showinfo("Thành công", "Nhập key thành công!")
+                        decrypt_user_folder()
+                        try:
+                            # Gọi hàm giải mã ở đây (giả sử bạn đã có hàm `giaima_noidung`)
+                            with open(selected_path, "r", encoding="utf-8") as f:
+                                data = f.read()
+                            i.delete("1.0", "end")
+                            i.insert("end", file_path)
+                        except Exception as e:
+                            messagebox.showerror("Lỗi giải mã", f"Không thể giải mã file:\n{str(e)}")
+                else:
+                    # Nếu không phải là file mã hóa, chỉ hiển thị nội dung
+                    i.delete("1.0", "end")
+                    i.insert("end", file_path)
+
             except Exception as e:
                 messagebox.showerror("Lỗi đọc file", f"Không thể đọc file:\n{str(e)}")
     def checktv():
