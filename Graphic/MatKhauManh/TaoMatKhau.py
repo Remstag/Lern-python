@@ -24,21 +24,22 @@ def encrypt_file(path, fernet):
 
 
 def encrypt_user_folder():
-    giatricuu.mahoa=1
-    user_dir = giatricuu.duongdanfile
-    key = giatricuu.keyhientai
-    try:
-        if not key:
-            return
-        fernet = Fernet(key)
-        for filename in os.listdir(user_dir):
-            full_path = os.path.join(user_dir, filename)
-            if os.path.isfile(full_path):
-                encrypt_file(full_path, fernet)
-        messagebox.showinfo("Thành công", "Mã hóa thư mục thành công!")
-    except Exception as e:
-        messagebox.showerror("Lỗi", f"Không thể mã hóa: {e}")
-
+    if giatricuu.mahoa==0:
+        giatricuu.mahoa=1
+        user_dir = giatricuu.duongdanfile
+        key = giatricuu.keyhientai
+        try:
+            if not key:
+                return
+            fernet = Fernet(key)
+            for filename in os.listdir(user_dir):
+                full_path = os.path.join(user_dir, filename)
+                if os.path.isfile(full_path):
+                    encrypt_file(full_path, fernet)
+            messagebox.showinfo("Thành công", "Mã hóa thư mục thành công!")
+        except Exception as e:
+            messagebox.showerror("Lỗi", f"Không thể mã hóa: {e}")
+    else: messagebox.showerror("Lỗi", "Bạn đã mã hóa thư mục rồi")
 
 def decrypt_file(path, fernet):
     try:
@@ -52,16 +53,18 @@ def decrypt_file(path, fernet):
 
 
 def decrypt_user_folder():
-    giatricuu.mahoa=0
-    user_dir = giatricuu.duongdanfile
-    key = giatricuu.keyhientai
-    if not key: return
-    fernet = Fernet(key)
+    if (giatricuu.mahoa==1):
+        giatricuu.mahoa=0
+        user_dir = giatricuu.duongdanfile
+        key = giatricuu.keyhientai
+        if not key: return
+        fernet = Fernet(key)
 
-    for filename in os.listdir(user_dir):
-        full_path = os.path.join(user_dir, filename)
-        if os.path.isfile(full_path):
-            decrypt_file(full_path, fernet)
+        for filename in os.listdir(user_dir):
+            full_path = os.path.join(user_dir, filename)
+            if os.path.isfile(full_path):
+                decrypt_file(full_path, fernet)
+    else : messagebox.showerror("Lỗi", "Không thể giải mã")
 def taomatkhau(main_content):
     main_frame = tk.Frame(main_content)
     if(giatricuu.x==1):
