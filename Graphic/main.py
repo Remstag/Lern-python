@@ -45,6 +45,19 @@ def dangxuat():
 root = tk.Tk()
 root.title("PYTHON CRYPTION")
 
+def thoat_ung_dung():
+    if (giatricuu.mahoa == 0):
+        TaoMatKhau.encrypt_user_folder()
+    giatricuu.x = 0
+    lbuser.config(text="")
+    giatricuu.emailhientai = ""
+    giatricuu.passhientai = ""
+    giatricuu.keyhientai = ""
+    giatricuu.uid = ""
+    giatricuu.duongdanfile = ""
+    root.destroy()
+# Liên kết sự kiện nút X với hàm thoát_ung_dung
+root.protocol("WM_DELETE_WINDOW", thoat_ung_dung)
 # content = Frame(root, bg="white", padx=5, pady=10)
 
 # Lấy kích thước màn hình và set kích thước cửa sổ = 1/2
@@ -211,6 +224,7 @@ footer.grid(row=2, sticky="nsew", columnspan=2)
 Label(footer, text="Posts and Telecommunications Institute of Technology", font=("Arial", 14), fg="red", background="lightgray").pack(expand=True,fill="both")
 
 frames["home"] = home_page
+
 root.mainloop()
 
 
