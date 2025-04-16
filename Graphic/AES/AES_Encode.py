@@ -94,9 +94,6 @@ def mahoavb(main_content):
         else:
             messagebox.showerror("Lỗi", "Không thể giải mã")
 
-
-
-
     def mhfile():
         file_path = filedialog.askopenfilename(title="Chọn file để mã hóa")
         if file_path:
@@ -104,46 +101,45 @@ def mahoavb(main_content):
             selected_path = os.path.abspath(file_path)
 
             # Kiểm tra nếu người dùng chưa đăng nhập và đang cố mở file trong C:/Appne
-            if selected_path.startswith(appne_dir) and not giatricuu.emailhientai:
-                messagebox.showerror("Truy cập bị từ chối",
-                                     "Bạn không được phép truy cập mục này, vui lòng đăng nhập")
-                return
+            if not giatricuu.emailhientai:
+                if selected_path.startswith(appne_dir):
+                    messagebox.showerror("Truy cập bị từ chối",
+                                         "Bạn không được phép truy cập mục này, vui lòng đăng nhập")
+                    return
             else:
                 # Nếu đã đăng nhập thì chỉ được phép vào đúng thư mục cá nhân
                 user_dir = os.path.join(appne_dir, giatricuu.emailhientai)
                 abs_user_dir = os.path.abspath(user_dir)
                 if selected_path.startswith(appne_dir) and not selected_path.startswith(abs_user_dir):
-                    messagebox.showerror("Truy cập bị từ chối", "Bạn chỉ được phép truy cập thư mục cá nhân của mình.")
+                    messagebox.showerror("Truy cập bị từ chối",
+                                         "Bạn chỉ được phép truy cập thư mục cá nhân của mình.")
                     return
 
             try:
                 with open(selected_path, "r", encoding="utf-8") as f:
                     data = f.read()
 
-                # ==== Biến xác định trạng thái file (đã giải mã chưa?) ====
-
-
-                if giatricuu.mahoa == 1:
+                # ==== Kiểm tra trạng thái file có mã hóa không ====
+                if giatricuu.mahoa == 1 and selected_path.startswith(appne_dir):
                     key = simpledialog.askstring("Nhập key", "File đang được mã hóa. Nhập key để giải mã:")
                     if not key:
                         messagebox.showinfo("Hủy thao tác", "Bạn đã hủy việc giải mã.")
                         return
                     if isinstance(giatricuu.keyhientai, bytes):
                         giatricuu.keyhientai = giatricuu.keyhientai.decode()
-                    if (giatricuu.keyhientai == key):
-                        # Đường dẫn thư mục cá nhân
+                    if giatricuu.keyhientai == key:
                         messagebox.showinfo("Thành công", "Nhập key thành công!")
                         decrypt_user_folder()
                         try:
-                            # Gọi hàm giải mã ở đây (giả sử bạn đã có hàm `giaima_noidung`)
                             with open(selected_path, "r", encoding="utf-8") as f:
                                 data = f.read()
                             entry.delete("1.0", "end")
                             entry.insert("end", data)
                         except Exception as e:
                             messagebox.showerror("Lỗi giải mã", f"Không thể giải mã file:\n{str(e)}")
+                    else:
+                        messagebox.showerror("Sai key", "Key không đúng!")
                 else:
-                    # Nếu không phải là file mã hóa, chỉ hiển thị nội dung
                     entry.delete("1.0", "end")
                     entry.insert("end", data)
 
@@ -161,6 +157,7 @@ def mahoavb(main_content):
             appne_dir = os.path.abspath("C:/Appne")
             selected_path = os.path.abspath(file_path)
 
+
             # Kiểm tra nếu người dùng chưa đăng nhập và đang cố mở file trong C:/Appne
             if selected_path.startswith(appne_dir) and not giatricuu.emailhientai:
                 messagebox.showerror("Truy cập bị từ chối",
@@ -176,7 +173,7 @@ def mahoavb(main_content):
 
             try:
 
-                if giatricuu.mahoa == 1:
+                if giatricuu.mahoa == 1 and selected_path.startswith(appne_dir):
                     key = simpledialog.askstring("Nhập key", "Thư mục đang được mã hóa. Nhập key để giải mã:")
                     if not key:
                         messagebox.showinfo("Hủy thao tác", "Bạn đã hủy việc giải mã.")
@@ -202,6 +199,7 @@ def mahoavb(main_content):
                         messagebox.showerror("Lỗi khi lưu file", f"Không thể lưu file:\n{str(e)}")
             except Exception as e:
                 messagebox.showerror("Lỗi lưu", f"Không thể lưu file:\n{str(e)}")
+
     #Frame include nhapkey, nhapiv: label, text, button
     nhapkeyiv_frame = Frame(frame,padx=2,pady=10,bd=1,relief="solid")
     nhapkeyiv_frame.grid(row=0,column=0,sticky="nsew")
