@@ -115,8 +115,7 @@ def mahoavbbf(main_content):
 
                 # ==== Biến xác định trạng thái file (đã giải mã chưa?) ====
 
-
-                if giatricuu.mahoa == 1:
+                if giatricuu.mahoa == 1 and selected_path.startswith(appne_dir):
                     key = simpledialog.askstring("Nhập key", "File đang được mã hóa. Nhập key để giải mã:")
                     if not key:
                         messagebox.showinfo("Hủy thao tác", "Bạn đã hủy việc giải mã.")
@@ -169,7 +168,7 @@ def mahoavbbf(main_content):
 
             try:
 
-                if giatricuu.mahoa == 1:
+                if giatricuu.mahoa == 1 and selected_path.startswith(appne_dir):
                     key = simpledialog.askstring("Nhập key", "Thư mục đang được mã hóa. Nhập key để giải mã:")
                     if not key:
                         messagebox.showinfo("Hủy thao tác", "Bạn đã hủy việc giải mã.")
