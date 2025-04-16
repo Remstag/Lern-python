@@ -171,7 +171,7 @@ def kiemtrafile(main_content):
     button = Button(tinhnang_frame, text="Kiểm tra với file dữ liệu gốc", font=("Arial", 14), command=checktv)
     button.grid(row=2, column=1, padx=5, pady=5, sticky="nsew")
 
-    button = Button(tinhnang_frame, text="Kiểm tra vói file mã băm gốc", font=("Arial", 14), command=checktvmb)
+    button = Button(tinhnang_frame, text="Kiểm tra với file mã băm gốc", font=("Arial", 14), command=checktvmb)
     button.grid(row=3, column=1, padx=5, pady=5, sticky="nsew")
     # Frame include vanbanmahoa
     vanbanmahoa_frame = Frame(frame2, padx=2, pady=20, bd=1, relief="solid")
