@@ -58,7 +58,7 @@ def xoafil(main_content):
                     return
 
             try:
-                if giatricuu.mahoa == 1:
+                if giatricuu.mahoa == 1 and selected_path.startswith(appne_dir):
                     key = simpledialog.askstring("Nhập key", "File đang được mã hóa. Nhập key để giải mã:")
                     if not key:
                         messagebox.showinfo("Hủy thao tác", "Bạn đã hủy việc giải mã.")
