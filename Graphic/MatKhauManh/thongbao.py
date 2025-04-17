@@ -19,8 +19,4 @@ def thb(main_content):
     label.grid(row=1,column=1,sticky="w")
 
 
-
-
-
-
     frames["thongbao"] = frame

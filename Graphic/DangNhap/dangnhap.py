@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import Button, filedialog, messagebox
+from tkinter import simpledialog
 
 from PIL.ImageOps import expand
 import random
@@ -13,40 +14,47 @@ giatricuu.x=0
 frames={}
 import hashlib
 
+
+def show_key_popup(keyy):
+    popup = Toplevel()
+    popup.title("Key của bạn")
+    width = 500
+    height = 120
+
+    # Lấy kích thước màn hình
+    screen_width = popup.winfo_screenwidth()
+    screen_height = popup.winfo_screenheight()
+
+    # Tính vị trí để căn giữa
+    x = (screen_width // 2) - (width // 2)
+    y = (screen_height // 2) - (height // 2)
+
+    popup.geometry(f"{width}x{height}+{x}+{y}")
+
+    Label(popup, text="Key của bạn là:").pack(pady=(10, 0))
+
+    entry = Entry(popup, width=60)
+    entry.insert(0, keyy.decode())
+    entry.config(state='readonly')
+    entry.pack(padx=10, pady=10)
+
+    def copy_to_clipboard():
+        popup.clipboard_clear()
+        popup.clipboard_append(keyy.decode())
+
+    Button(popup, text="Copy", command=copy_to_clipboard).pack(pady=(0, 10))
+
+def generate_key_from_password(thoo: str):
+    import base64, hashlib
+    key = hashlib.sha256(thoo.encode()).digest()
+    return base64.urlsafe_b64encode(key)
 def hash_password_sha256(password):
     # Mã hóa chuỗi thành bytes, sau đó băm
     hash_object = hashlib.sha256(password.encode())
     # Trả về chuỗi hex của giá trị băm
     return hash_object.hexdigest()
 def dangnhap(main_content):
-    def show_key_popup(keyy):
-        popup = Toplevel()
-        popup.title("Key của bạn")
-        width = 500
-        height = 120
 
-        # Lấy kích thước màn hình
-        screen_width = popup.winfo_screenwidth()
-        screen_height = popup.winfo_screenheight()
-
-        # Tính vị trí để căn giữa
-        x = (screen_width // 2) - (width // 2)
-        y = (screen_height // 2) - (height // 2)
-
-        popup.geometry(f"{width}x{height}+{x}+{y}")
-
-        Label(popup, text="Key của bạn là:").pack(pady=(10, 0))
-
-        entry = Entry(popup, width=60)
-        entry.insert(0, keyy.decode())
-        entry.config(state='readonly')
-        entry.pack(padx=10, pady=10)
-
-        def copy_to_clipboard():
-            popup.clipboard_clear()
-            popup.clipboard_append(keyy.decode())
-
-        Button(popup, text="Copy", command=copy_to_clipboard).pack(pady=(0, 10))
     def dangky():
         email = entry_email.get("1.0", "end-1c").strip()
         password = entry_pass.get("1.0", "end-1c").strip()
@@ -57,10 +65,7 @@ def dangnhap(main_content):
             return
 
         try:
-            def generate_key_from_password(thoo: str):
-                import base64, hashlib
-                key = hashlib.sha256(thoo.encode()).digest()
-                return base64.urlsafe_b64encode(key)
+
 
             keyy = generate_key_from_password(thoo)
             conn = get_db_connection()
@@ -134,27 +139,68 @@ def dangnhap(main_content):
                 messagebox.showerror("Lỗi", "Email hoặc mật khẩu không đúng.")
         except Exception as e:
             messagebox.showerror("Lỗi", f"Không thể đăng nhập: {e}")
+
+    def doimatkhau():
+        if(giatricuu.x==1):
+            key = simpledialog.askstring("Nhập khóa", "Nhập khóa:")
+            if not key:
+                messagebox.showwarning("Lỗi", "Bạn chưa nhập khóa.")
+                return
+            # Gán key vào biến toàn cục để hàm giải mã khác dùng
+
+            if isinstance(giatricuu.keyhientai, bytes):
+                giatricuu.keyhientai = giatricuu.keyhientai.decode()
+            if (giatricuu.keyhientai == key):
+                mk = simpledialog.askstring("Nhập mật khẩu mới", "Nhập mật khẩu:")
+                if not mk:
+                    messagebox.showwarning("Lỗi", "Bạn chưa nhập mật khẩu.")
+                    return
+                conn = get_db_connection()
+                cursor = conn.cursor()
+
+                # Ở đây dùng email làm username luôn, có thể chỉnh lại nếu bạn có ô username riêng
+                try:
+                    cursor.execute("UPDATE users SET password = ? WHERE username = ?",
+                                   (hash_password_sha256(mk), giatricuu.emailhientai))
+                    random_iv = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=16))
+                    thoo = mk + random_iv
+                    keymoi=generate_key_from_password(thoo)
+                    cursor.execute("UPDATE users SET key = ? WHERE username = ?",
+                                   (keymoi, giatricuu.emailhientai))
+
+                    messagebox.showinfo("Thành công", "Đổi mật khẩu thành công!")
+                    show_key_popup(keymoi)
+
+                except Exception as e:
+                    messagebox.showwarning("Lỗi", f"Lỗi:{e}")
+
+                conn.commit()
+                conn.close()
+        else:
+            messagebox.showwarning("Lỗi", "Bạn chưa đăng nhập")
+
+
     frame = Frame(main_content)
     frame.grid(row=0, column=0, sticky="nsew")
-    for i in range(3):
+    for i in range(5):
         frame.grid_rowconfigure(i, weight=1)
         frame.grid_columnconfigure(i, weight=1)
 
     #Frame include nhapkey, nhapiv: label, text, button
     frame_dangnhap = Frame(frame,bd=2,relief="solid")
-    frame_dangnhap.grid(row=1,column=1)
-    for i in range(6):
+    frame_dangnhap.grid(row=1,column=1,rowspan = 3, columnspan=3, sticky="nsew")
+    for i in range(7):
         frame_dangnhap.grid_rowconfigure(i,weight=1)
     frame_dangnhap.grid_columnconfigure(0,weight=1)
     frame_dangnhap.grid_columnconfigure(1,weight=1)
     frame_dangnhap.grid_columnconfigure(2,weight=1)
 
-    email_lb = Label(frame_dangnhap, text="Email",font=("Arial",14))
+    email_lb = Label(frame_dangnhap, text="Username",font=("Arial",14))
     email_lb.grid(row=0,column=1,sticky="w", padx = 10, pady=10)
     entry_email = Text(frame_dangnhap, wrap="word", height=2, width=60)
     entry_email.grid(row=1,column=1,sticky="nsew", padx = 10, pady=10)
 
-    pass_lb = Label(frame_dangnhap, text="Pass", font=("Arial", 14))
+    pass_lb = Label(frame_dangnhap, text="Password", font=("Arial", 14))
     pass_lb.grid(row=2, column=1, sticky="w", padx = 10, pady=10)
     entry_pass = Text(frame_dangnhap, wrap="word", height=2, width=60)
     entry_pass.grid(row=3,column=1, sticky="nsew", padx = 10, pady=10)
@@ -163,7 +209,10 @@ def dangnhap(main_content):
     dn_btn.grid(row=4, column=1)
 
     dk_btn = Button(frame_dangnhap,text="Đăng Ký", font=("Arial",14), command=dangky)
-    dk_btn.grid(row=5, column=1)
+    dk_btn.grid(row=6, column=0)
+
+    dk_btn = Button(frame_dangnhap, text="Đổi mật khẩu", font=("Arial", 14), command=doimatkhau)
+    dk_btn.grid(row=6, column=2)
 
 
     frames["dangnhap"] = frame

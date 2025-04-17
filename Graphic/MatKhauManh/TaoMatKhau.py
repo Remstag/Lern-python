@@ -169,7 +169,7 @@ def taomatkhau(main_content):
 
             # ✅ Nhập key giải mã
             if(giatricuu.mahoa==1):
-                key = askstring("Nhập khóa", "Nhập khóa giải mã thư mục:")
+                key = askstring("Nhập khóa", "File đang bị mã hóa. Nhập khóa để giải mã thư mục:")
                 if not key:
                     messagebox.showwarning("Lỗi", "Bạn chưa nhập khóa.")
                     return
@@ -205,6 +205,8 @@ def taomatkhau(main_content):
                             return
 
                         nameF_path.set(path)
+                else:
+                    messagebox.showerror("Lỗi", "Sai key rồi địt mẹ mày.")
             else:
                 base_path = r"C:\Appne"
                 user_dir = os.path.join(base_path, giatricuu.emailhientai)
